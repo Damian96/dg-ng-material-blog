@@ -1,0 +1,20 @@
+<mat-toolbar color="primary">
+  <mat-toolbar-row>
+    <span class="cursor-pointer" routerLink="" routerLinkActive="active">Blog</span>
+    <span class="example-spacer"></span>
+    <button mat-icon-button class="add-post-icon" title="Add New Post" aria-label="Add New Post" routerLink="add-post">
+      <mat-icon>add</mat-icon>
+    </button>
+    <button mat-icon-button class="login-icon" title="Login" aria-label="Login" routerLink="login" *ngIf="!authService.isLoggedIn()">
+      <mat-icon>login</mat-icon>
+    </button>
+    <button mat-icon-button class="register-icon" title="Register" aria-label="Register" routerLink="register"
+      *ngIf="!authService.isLoggedIn()">
+      <mat-icon>app_registration</mat-icon>
+    </button>
+    <button mat-icon-button class="logout-icon" title="Logout" aria-label="Logout" routerLink="logout"
+      *ngIf="authService.isLoggedIn()">
+      <mat-icon>logout</mat-icon>
+    </button>
+  </mat-toolbar-row>
+</mat-toolbar>

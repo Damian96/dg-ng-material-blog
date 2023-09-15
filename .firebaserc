@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "dg-ng-material-blog": {
+      "hosting": {
+        "dg-ng-material-blog": [
+          "dg-ng-material-blog"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "dg-ng-material-blog"
+  }
+}

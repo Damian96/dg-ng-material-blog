@@ -1,0 +1,8 @@
+<ng-container *ngIf="showAlert">
+  <div class="alert-container" [ngClass]="{ 'error': alertType === 'error', 'success': alertType === 'success' }">
+    <span>{{ alertMessage }}</span>
+    <button mat-icon-button (click)="closeAlert()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+</ng-container>

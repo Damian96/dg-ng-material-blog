@@ -1,0 +1,38 @@
+<div class="container">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Login</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="container py-4">
+        <div class="row">
+          <mat-form-field appearance="fill">
+            <mat-label autofocus="true">Email</mat-label>
+            <input matInput formControlName="email" type="email" placeholder="Email" required tabindex="1" />
+          </mat-form-field>
+          <mat-error *ngIf="loginForm.get('email')?.touched && loginForm.get('email')?.hasError('required')">
+            Email is required
+          </mat-error>
+          <mat-error *ngIf="loginForm.get('email')?.touched && loginForm.get('email')?.hasError('email')">
+            Invalid email format
+          </mat-error>
+        </div>
+        <div class="row">
+          <mat-form-field appearance="fill">
+            <mat-label>Password</mat-label>
+            <input matInput formControlName="password" type="password" placeholder="Password" required tabindex="2" />
+          </mat-form-field>
+          <mat-error *ngIf="loginForm.get('password')?.touched && loginForm.get('password')?.hasError('required')">
+            Password is required.
+          </mat-error>
+          <mat-error *ngIf="loginForm.get('password')?.touched && loginForm.get('password')?.hasError('pattern')">
+            Invalid password format.
+            Password should have at least 4 characters.
+          </mat-error>
+        </div>
+
+        <button mat-raised-button color="primary" type="submit" [disabled]="loginForm.invalid">Login</button>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

@@ -7,4 +7,12 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'dg-ng-material-blog';
+
+  finishedLoading: boolean = false;
+
+  ngOnInit() {
+    setTimeout(() => {
+      this.finishedLoading = true;
+    }, 1500)
+  }
 }

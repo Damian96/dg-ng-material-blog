@@ -1,0 +1,9 @@
+{
+  "hosting": [
+    {
+      "target": "dg-ng-material-blog",
+      "source": ".",
+      "frameworksBackend": {}
+    }
+  ]
+}
