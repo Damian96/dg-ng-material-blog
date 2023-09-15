@@ -21,6 +21,8 @@ import { provideDatabase, getDatabase } from '@angular/fire/database';
 import { ReactiveFormsModule } from "@angular/forms";
 import { AlertComponent } from './shared/alert/alert.component';
 import { MainComponent } from './layout/main/main.component';
+import { BootstrapModule } from "./bootstrap/bootstrap.module";
+import { PostListComponent } from './post/post-list/post-list.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +33,8 @@ import { MainComponent } from './layout/main/main.component';
     LogoutComponent,
     RegisterComponent,
     AlertComponent,
-    MainComponent
+    MainComponent,
+    PostListComponent
   ],
   imports: [
     BrowserModule,
@@ -44,6 +47,7 @@ import { MainComponent } from './layout/main/main.component';
     provideAuth(() => getAuth()),
     provideDatabase(() => getDatabase()),
     AngularFireAuthModule,
+    BootstrapModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -31,11 +31,9 @@
             ],
             "styles": [
               "@angular/material/prebuilt-themes/deeppurple-amber.css",
-              "vendor/mdb.min.css",
               "src/styles.scss"
             ],
             "scripts": [
-              "vendor/mdb.min.js"
             ]
           },
           "configurations": {
@@ -43,8 +41,8 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "500kb",
-                  "maximumError": "1mb"
+                  "maximumWarning": "4mb",
+                  "maximumError": "5mb"
                 },
                 {
                   "type": "anyComponentStyle",
