@@ -1,4 +1,4 @@
-import { Component, SimpleChanges } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { ChangeDetectorRef } from '@angular/core';
 import { Post } from "src/app/shared/models/post.model";
 import { PostService } from "../post.service";
@@ -14,8 +14,13 @@ import { Router } from "@angular/router";
 export class PostListComponent {
   private posts: Array<Post> = [];
 
-  categoryPosts: Post[] = [];
+  @Input() keyword: string | undefined;
+  @Input() searchField: string | undefined;
+
+  filteredPosts: Post[] = this.posts;
   availableCats: string[] = [];
+
+  isLoggedIn: boolean = false;
 
   protected userUID: string = '';
 
@@ -28,12 +33,17 @@ export class PostListComponent {
     this._authService.isUserReady()
       .subscribe(() => {
         this.userUID = this._authService.isLoggedIn() ? this._authService.user!.uid : '';
+        this.isLoggedIn = this._authService.isLoggedIn();
       });
   }
 
   ngOnInit() {
     this.availableCats = this.getAvailableCategories();
-    this.filterPostsByCategory(this.availableCats[0]);
+
+    this.filteredPosts = this.posts;
+    if (this.keyword !== undefined) {
+      this.filteredPosts = this._postService.filterPostsByTitle(this.keyword);
+    }
   }
 
   deletePost(postId: string, postCreator: string): void {
@@ -71,7 +81,15 @@ export class PostListComponent {
     return availableCats;
   }
 
-  filterPostsByCategory(category: string): void {
-    this.categoryPosts = this.posts.filter((post) => post.category === category);
+  filterPostsByCategory(category: string | -1): void {
+    if (category == -1) {
+      this.filteredPosts = this.posts;
+      return;
+    }
+    this.filteredPosts = this.posts.filter((post) => post.category === category);
+  }
+
+  filterPostsByCurrentUser() {
+    this.filteredPosts = this.posts.filter((post) => post.creator.uid === this._authService.user?.uid);
   }
 }

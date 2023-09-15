@@ -1,22 +1,31 @@
-<mat-toolbar color="primary">
-  <mat-toolbar-row>
-    <span class="cursor-pointer" routerLink="" routerLinkActive="active">Blog</span>
-    <!-- <span *ngIf="isLoggedIn"></span> -->
-    <span class="example-spacer"></span>
-    <button mat-icon-button class="add-post-icon" title="Add New Post" aria-label="Add New Post" routerLink="add-post">
-      <mat-icon>add</mat-icon>
-    </button>
-    <button mat-icon-button class="login-icon" title="Login" aria-label="Login" routerLink="login"
-      *ngIf="!isLoggedIn">
-      <mat-icon>login</mat-icon>
-    </button>
-    <button mat-icon-button class="register-icon" title="Register" aria-label="Register" routerLink="register"
-      *ngIf="!isLoggedIn">
-      <mat-icon>app_registration</mat-icon>
-    </button>
-    <button mat-icon-button class="logout-icon" title="Logout" aria-label="Logout" routerLink="logout"
-      *ngIf="isLoggedIn">
-      <mat-icon>logout</mat-icon>
-    </button>
-  </mat-toolbar-row>
-</mat-toolbar>
+<div>
+  <mat-toolbar color="primary">
+    <mat-toolbar-row>
+      <span title="Homepage" routerLink="" routerLinkActive="active" class="cursor-pointer text-white d-flex align-items-center">
+        <span class="mt-2 me-2"><mat-icon>home</mat-icon></span>
+        <span>Blog Homepage</span>
+      </span>
+      <!-- <span *ngIf="isLoggedIn"></span> -->
+      <span class="example-spacer"></span>
+      <button mat-icon-button class="search-posts-icon" title="Search Post" aria-label="Search Posts" routerLink="search-posts">
+        <mat-icon>search</mat-icon>
+      </button>
+      <button mat-icon-button class="add-post-icon" title="Add New Post" aria-label="Add New Post" routerLink="add-post">
+        <mat-icon>add</mat-icon>
+      </button>
+      <button mat-icon-button class="login-icon" title="Login" aria-label="Login" routerLink="login"
+        *ngIf="!isLoggedIn">
+        <mat-icon>login</mat-icon>
+      </button>
+      <button mat-icon-button class="register-icon" title="Register" aria-label="Register" routerLink="register"
+        *ngIf="!isLoggedIn">
+        <mat-icon>app_registration</mat-icon>
+      </button>
+      <button mat-icon-button class="logout-icon" title="Logout" aria-label="Logout" routerLink="logout"
+        *ngIf="isLoggedIn">
+        <mat-icon>logout</mat-icon>
+      </button>
+    </mat-toolbar-row>
+  </mat-toolbar>
+
+</div>

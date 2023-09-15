@@ -1,15 +1,16 @@
 import { AbstractControl, ValidatorFn } from "@angular/forms";
+import { User } from "firebase/auth";
 
 export class Post {
   id: string | null;
-  creator: string;
+  creator: User;
   title: string = '';
   content: string = '';
   createdAt: Date = new Date();
   updatedAt: Date = new Date();
   category: categoryType = null;
 
-  constructor(id: string | null = '0', creator: string, title?: string, content?: string, cat?: categoryType, created_at?: Date, updated_at?: Date) {
+  constructor(id: string | null = '0', creator: User, title?: string, content?: string, cat?: categoryType, created_at?: Date, updated_at?: Date) {
     if (id !== '0' && id !== null)
       this.id = id.toString();
     else

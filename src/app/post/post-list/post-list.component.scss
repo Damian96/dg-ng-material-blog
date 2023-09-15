@@ -1,11 +1,11 @@
 .container-row {
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
-  gap: 35px 3;
+  gap: 35px 2.25vw;
 
   .post-card {
-    width: 19.90vw;
+    width: 15.90vw;
     max-width: calc(max(150px, 33.33vw));
     box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
   }

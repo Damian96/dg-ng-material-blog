@@ -24,13 +24,17 @@ export class PostService {
     if (postsData) {
       this.posts = JSON.parse(postsData)
         .map((data:
-          { id: string, creator: string, title: string, content: string, createdAt: Date, updatedAt: Date, category: categoryType }
+          { id: string, creator: User, title: string, content: string, createdAt: Date, updatedAt: Date, category: categoryType }
         ) => new Post(data.id, data.creator, data.title, data.content, data.category, data.createdAt, data.updatedAt));
     }
   }
 
   private savePostsToLocalStorage(): void {
     store.set(this._storageKey, JSON.stringify(this.posts));
+  }
+
+  filterPostsByTitle(keyword: string): Post[] {
+    return this.getAllPosts().filter((post) => post.title.includes(keyword));
   }
 
   /* CRUD */

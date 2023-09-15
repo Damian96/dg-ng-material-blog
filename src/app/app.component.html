@@ -7,16 +7,28 @@
   <title>DG-NG Material Blog</title>
 </head>
 
-<div class="container-fluid d-flex justify-content-center align-items-center" *ngIf="!finishedLoading">
-  <mat-spinner></mat-spinner>
-</div>
+<style type="text/css">
+  /* * {
+    box-sizing: border-box;
+    outline: 3px solid limegreen;
+  } */
 
-<body>
+  /* body {
+    overflow-x: hidden;
+  } */
+</style>
+
+<body class="container-fluid ps-0">
+
+  <div class="container-fluid d-flex justify-content-center align-items-center" *ngIf="!finishedLoading">
+    <mat-spinner></mat-spinner>
+  </div>
 
   <app-header *ngIf="finishedLoading"></app-header>
 
   <app-main class="md-margin" *ngIf="finishedLoading"></app-main>
 
+  <app-footer *ngIf="finishedLoading"></app-footer>
 
 </body>
 

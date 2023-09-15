@@ -9,7 +9,7 @@
         <div class="row pb-3">
           <mat-form-field appearance="fill">
             <mat-label autofocus="true">Title</mat-label>
-            <input matInput formControlName="title" type="text" placeholder="Your Post's title" required tabindex="1" />
+            <input autofocus matInput formControlName="title" type="text" placeholder="Your Post's title" required tabindex="1" />
           </mat-form-field>
           <mat-error *ngIf="createPostForm.get('title')?.touched && createPostForm.get('title')?.hasError('required')">
             The Title is required.
@@ -37,7 +37,7 @@
         <div class="row pb-3">
           <mat-form-field appearance="fill">
             <mat-label autofocus="true">Category</mat-label>
-            <mat-select formControlName="category" required>
+            <mat-select formControlName="category" required tabIndex="3">
               <mat-option *ngFor="let category of categoryTypes" [value]="category">
                 {{ category }}
               </mat-option>
@@ -53,7 +53,7 @@
           </mat-error>
         </div>
 
-        <button mat-raised-button color="primary" type="submit" [disabled]="createPostForm.invalid">Create Post</button>
+        <button mat-raised-button color="primary" type="submit" [disabled]="createPostForm.invalid" tabindex="4">Create Post</button>
 
       </form>
     </mat-card-content>

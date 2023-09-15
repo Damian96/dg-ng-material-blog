@@ -27,6 +27,8 @@ import { ConfirmDialogComponent } from './shared/confirm-dialog/confirm-dialog.c
 import { CapitilizePipe } from './pipes/capitilize.pipe';
 import { EditPostComponent } from './post/edit-post/edit-post.component';
 import { FormatDatePipe } from './pipes/format-date.pipe';
+import { FooterComponent } from './layout/footer/footer.component';
+import { SearchPostsComponent } from './post/search-posts/search-posts.component';
 
 @NgModule({
   declarations: [
@@ -42,7 +44,9 @@ import { FormatDatePipe } from './pipes/format-date.pipe';
     ConfirmDialogComponent,
     CapitilizePipe,
     EditPostComponent,
-    FormatDatePipe
+    FormatDatePipe,
+    FooterComponent,
+    SearchPostsComponent
   ],
   imports: [
     BrowserModule,

@@ -32,7 +32,7 @@ export class CreatePostComponent {
 
     const newPost = new Post(
       null,
-      this._authService.user!.uid,
+      this._authService.user!,
       this.createPostForm.get('title')?.value,
       this.createPostForm.get('content')?.value,
       this.createPostForm.get('category')?.value

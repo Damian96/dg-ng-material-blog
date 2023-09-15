@@ -20,14 +20,37 @@ body {
 
 main {
   margin-top: 100px;
+  min-height: 80vh;
 }
 
 /* Importing Bootstrap SCSS file. */
-@import 'bootstrap/scss/bootstrap';
 
+$primaryMat: #673ab7;
+/* CUSTOM */
+
+@import '../node_modules/bootstrap/scss/bootstrap.scss';
 
 .pos-abs-top-right {
   position: absolute !important;
   right: 0 !important;
   transform: translate(0, -50%) !important;
+}
+
+.color-primary-mat {
+  color: $primaryMat;
+}
+
+.color-accent-mat {
+}
+
+.bg-primary-mat {
+  background-color: $primaryMat;
+  color: white;
+}
+
+.bg-accent-mat {
+}
+
+.text-white {
+  color: white !important;
 }
