@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, SimpleChanges } from '@angular/core';
 import { ChangeDetectorRef } from '@angular/core';
 import { Post } from "src/app/shared/models/post.model";
 import { PostService } from "../post.service";
@@ -20,9 +20,10 @@ export class PostListComponent {
 
     console.log(this.posts);
 
-    if (this._authService.isLoggedIn()) {
-      this.userUID = this._authService.user!.uid;
-    }
+    this._authService.isUserReady()
+      .subscribe(() => {
+        this.userUID = this._authService.isLoggedIn() ? this._authService.user!.uid : '';
+      });
   }
 
   deletePost(postId: string, postCreator: string): void {

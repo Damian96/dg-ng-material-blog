@@ -8,7 +8,17 @@ import { AuthService } from "src/app/auth/auth.service";
 })
 export class HeaderComponent {
 
-  constructor(public authService: AuthService) {
+  isLoggedIn: boolean = false;
+  userEmail: string | null = '';
 
+  constructor(private _authService: AuthService) {
+    this._authService.isUserReady()
+      .subscribe(() => {
+        this.isLoggedIn = this._authService.isLoggedIn();
+        if (this._authService.user != null && this.isLoggedIn) {
+          this.userEmail = this._authService.user!.email;
+        }
+      });
   }
+
 }

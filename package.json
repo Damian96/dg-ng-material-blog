@@ -5,6 +5,7 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
+    "deploy-fb": "firebase deploy --only hosting",
     "deploy-gh": "ng deploy --base-href='https://damian96.github.io/dg-ng-material-blog/'",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"

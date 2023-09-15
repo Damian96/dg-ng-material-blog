@@ -2,6 +2,7 @@ import { Injectable } from "@angular/core";
 
 import { FirebaseApp } from "@angular/fire/app";
 import { browserLocalPersistence, setPersistence } from "@angular/fire/auth";
+import { Router } from "@angular/router";
 
 import { signOut, getAuth, Auth, User, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
 import { Observable, catchError, from, map, of, switchMap } from 'rxjs';
@@ -20,8 +21,12 @@ export class AuthService {
    *
    * @param firebaseProvider !!IMPORTANT!! DO NOT REMOVE THE PROVIDER
    */
-  constructor(private firebaseProvider: FirebaseApp) {
+  constructor(private firebaseProvider: FirebaseApp, private _router: Router) {
     this.#auth = getAuth(this.firebaseProvider);
+  }
+
+  isUserReady(): Observable<void> {
+    return from(this.#auth.authStateReady());
   }
 
   register(email: string, password: string): Observable<User | false> {
@@ -33,7 +38,8 @@ export class AuthService {
   }
 
   isLoggedIn(): boolean {
-    return this.#auth.currentUser != null;
+    this.user = this.#auth.currentUser;
+    return this.user != null;
   }
 
   login(email: string, password: string): Observable<User | false> {
@@ -46,6 +52,8 @@ export class AuthService {
   }
 
   logout(): void {
-    signOut(this.#auth);
+    signOut(this.#auth).then(() => {
+      this._router.navigateByUrl('/post-list');
+    });
   }
 }
