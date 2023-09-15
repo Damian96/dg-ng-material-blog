@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 
 import * as store from "store";
-import { Post, generatePostUID, mockPosts } from "../shared/models/post.model";
+import { Post } from "../shared/models/post.model";
+import { User } from "@angular/fire/auth";
 
 @Injectable({
   providedIn: 'root'
@@ -23,8 +24,8 @@ export class PostService {
     if (postsData) {
       this.posts = JSON.parse(postsData)
         .map((data:
-          { id: string, title: string, desc: string, createdAt: Date, updatedAt: Date }
-        ) => new Post(data.id, data.title, data.desc));
+          { id: string, creator: string, title: string, content: string, createdAt: Date, updatedAt: Date }
+        ) => new Post(data.id, data.creator, data.title, data.content));
     }
   }
 
@@ -43,7 +44,7 @@ export class PostService {
   }
 
   addPost(post: Post): void {
-    post.id = generatePostUID();
+    // post.id = generatePostUID();
 
     this.posts.push(post);
     this.savePostsToLocalStorage();
@@ -67,7 +68,7 @@ export class PostService {
     this.savePostsToLocalStorage();
   }
 
-  generateDummyPosts(): void {
-    store.set(this._storageKey, JSON.stringify(mockPosts));
-  }
+  // generateDummyPosts(): void {
+  //   store.set(this._storageKey, JSON.stringify(mockPosts));
+  // }
 }

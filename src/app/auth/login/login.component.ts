@@ -5,6 +5,7 @@ import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { User } from "@angular/fire/auth";
 
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { Router } from "@angular/router";
 
 @Component({
   selector: 'app-login',
@@ -19,7 +20,7 @@ export class LoginComponent {
   });
 
 
-  constructor(private _authService: AuthService, private _snackBar: MatSnackBar) { }
+  constructor(private _authService: AuthService, private _snackBar: MatSnackBar, private _router: Router) { }
 
   onSubmit(): void {
     if (this.loginForm.invalid) {
@@ -29,11 +30,12 @@ export class LoginComponent {
 
     this._authService
       .login(this.loginForm.get('email')?.value, this.loginForm.get('password')?.value)
-      .subscribe((result: User | false) => {
+      .subscribe((result: User | boolean) => {
         if (result !== false) {
           const message = 'You have successfully logged in!';
           console.log(message);
           this._snackBar.open(message, 'OK');
+          this._router.navigateByUrl('/post-list');
         }
       },
         (error) => {

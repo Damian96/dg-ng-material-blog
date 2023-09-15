@@ -5,6 +5,7 @@ import { PostService } from "../post.service";
 import { Post, categoryTypeArray, categoryValidator } from "src/app/shared/models/post.model";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { Router } from "@angular/router";
+import { AuthService } from "src/app/auth/auth.service";
 
 @Component({
   selector: 'app-create-post',
@@ -15,7 +16,7 @@ export class CreatePostComponent {
 
   categoryTypes: Array<string> = categoryTypeArray;
 
-  constructor(private _postService: PostService, private _snackBar: MatSnackBar, private _router: Router) { };
+  constructor(private _authService: AuthService, private _postService: PostService, private _snackBar: MatSnackBar, private _router: Router) { };
 
   createPostForm: FormGroup = new FormGroup({
     title: new FormControl('', [Validators.required, Validators.minLength(5)]),
@@ -29,7 +30,13 @@ export class CreatePostComponent {
       return;
     }
 
-    const newPost = new Post(null, this.createPostForm.get('title')?.value, this.createPostForm.get('content')?.value);
+    const newPost = new Post(
+      null,
+      this._authService.user!.uid,
+      this.createPostForm.get('title')?.value,
+      this.createPostForm.get('content')?.value,
+      this.createPostForm.get('category')?.value
+    );
     this._postService.addPost(newPost);
 
     this._snackBar.open(`Your post has been successfully created with id ${newPost.id}!`, 'OK');

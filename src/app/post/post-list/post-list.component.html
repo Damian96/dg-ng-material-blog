@@ -1,1 +1,32 @@
-<p>post-list works!</p>
+<div class="container-fluid post-list-container">
+  <div class="row container-row">
+    <mat-card class="post-card" *ngFor="let post of posts">
+      <mat-card-header>
+        <!-- <div mat-card-avatar class="example-header-image"></div> -->
+        <mat-card-title>{{ post.title }}</mat-card-title>
+        <mat-card-subtitle>{{ post.createdAt.toLocaleString() }}</mat-card-subtitle>
+        <button mat-button (click)="deletePost(post.id!, post.creator)" class="text-danger"
+          *ngIf="userUID == post.creator">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </mat-card-header>
+      <!-- <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu"> -->
+      <mat-card-content>
+        <p>
+          {{ post.content }}
+        </p>
+      </mat-card-content>
+      <mat-card-actions>
+        <!-- <button mat-button>LIKE</button> -->
+        <!-- <button mat-button>SHARE</button> -->
+      </mat-card-actions>
+    </mat-card>
+  </div>
+</div>
+
+
+<!-- <mat-paginator [length]="100"
+              [pageSize]="10"
+              [pageSizeOptions]="[5, 10, 25, 100]"
+              aria-label="Select page">
+</mat-paginator> -->

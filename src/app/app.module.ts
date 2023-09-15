@@ -23,6 +23,7 @@ import { AlertComponent } from './shared/alert/alert.component';
 import { MainComponent } from './layout/main/main.component';
 import { BootstrapModule } from "./bootstrap/bootstrap.module";
 import { PostListComponent } from './post/post-list/post-list.component';
+import { ConfirmDialogComponent } from './shared/confirm-dialog/confirm-dialog.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import { PostListComponent } from './post/post-list/post-list.component';
     RegisterComponent,
     AlertComponent,
     MainComponent,
-    PostListComponent
+    PostListComponent,
+    ConfirmDialogComponent
   ],
   imports: [
     BrowserModule,

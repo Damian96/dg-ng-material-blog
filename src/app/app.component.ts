@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { environment } from "src/environments/environment";
 
 @Component({
   selector: 'app-root',
@@ -13,6 +14,7 @@ export class AppComponent {
   ngOnInit() {
     setTimeout(() => {
       this.finishedLoading = true;
-    }, 800)
+    }, 800);
   }
+
 }
