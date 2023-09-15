@@ -21,7 +21,9 @@ export class AppComponent {
         this.finishedLoading = true;
 
         if (this._authService.isLoggedIn()) {
-          this._snackBar.open(`Welcome back, ${this._authService.user?.email}!`, 'Thanks!');
+          this._snackBar.open(`Welcome back, ${this._authService.user?.email}!`, 'Thanks!', {
+            duration: 3000
+          });
         }
       }, 500);
     });

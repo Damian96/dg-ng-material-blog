@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
 import * as store from "store";
-import { Post } from "../shared/models/post.model";
+import { Post, categoryType } from "../shared/models/post.model";
 import { User } from "@angular/fire/auth";
 
 @Injectable({
@@ -24,8 +24,8 @@ export class PostService {
     if (postsData) {
       this.posts = JSON.parse(postsData)
         .map((data:
-          { id: string, creator: string, title: string, content: string, createdAt: Date, updatedAt: Date }
-        ) => new Post(data.id, data.creator, data.title, data.content));
+          { id: string, creator: string, title: string, content: string, createdAt: Date, updatedAt: Date, category: categoryType }
+        ) => new Post(data.id, data.creator, data.title, data.content, data.category, data.createdAt, data.updatedAt));
     }
   }
 

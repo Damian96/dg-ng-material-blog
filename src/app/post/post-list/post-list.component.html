@@ -1,14 +1,34 @@
+<div class="col-lg-8 offset-lg-2 col-md-6 offset-md-3 col-sm-12">
+  <div class="row flex-row gap-2">
+    <button type="button" class="col flex-grow-0 btn btn-secondary btn-md" title="{{ category | capitilize }}"
+      *ngFor="let category of availableCats" (click)="filterPostsByCategory(category)">
+      {{ category | capitilize }}
+    </button>
+  </div>
+</div>
+
 <div class="container-fluid post-list-container">
   <div class="row container-row">
-    <mat-card class="post-card" *ngFor="let post of posts">
-      <mat-card-header>
+    <mat-card class="post-card" *ngFor="let post of categoryPosts">
+      <mat-card-header class="position-relative">
+        <div class="post-card--actions position-absolute pos-abs-top-right">
+          <button (click)="deletePost(post.id!, post.creator)" class="btn btn-light p-0 text-danger"
+            *ngIf="userUID == post.creator" style="top: 20px !important;">
+            <mat-icon>delete</mat-icon>
+          </button>
+          <button (click)="editPost(post.id!)" class="btn btn-light p-0 text-danger" *ngIf="userUID == post.creator"
+            style="top: 20px !important;">
+            <mat-icon>edit</mat-icon>
+          </button>
+        </div>
         <!-- <div mat-card-avatar class="example-header-image"></div> -->
-        <mat-card-title>{{ post.title }}</mat-card-title>
-        <mat-card-subtitle>{{ post.createdAt.toLocaleString() }}</mat-card-subtitle>
-        <button mat-button (click)="deletePost(post.id!, post.creator)" class="text-danger"
-          *ngIf="userUID == post.creator">
-          <mat-icon>delete</mat-icon>
-        </button>
+        <mat-card-title>
+          <span>{{ post.title }}</span>
+        </mat-card-title>
+        <mat-card-subtitle>{{ post.createdAt | formatDate: 'post-list' }}</mat-card-subtitle>
+        <mat-card-subtitle>
+          <a href="javascript:void(0);">{{ post.category }}</a>
+        </mat-card-subtitle>
       </mat-card-header>
       <!-- <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu"> -->
       <mat-card-content>

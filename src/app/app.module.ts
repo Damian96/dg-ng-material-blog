@@ -24,6 +24,9 @@ import { MainComponent } from './layout/main/main.component';
 import { BootstrapModule } from "./bootstrap/bootstrap.module";
 import { PostListComponent } from './post/post-list/post-list.component';
 import { ConfirmDialogComponent } from './shared/confirm-dialog/confirm-dialog.component';
+import { CapitilizePipe } from './pipes/capitilize.pipe';
+import { EditPostComponent } from './post/edit-post/edit-post.component';
+import { FormatDatePipe } from './pipes/format-date.pipe';
 
 @NgModule({
   declarations: [
@@ -36,7 +39,10 @@ import { ConfirmDialogComponent } from './shared/confirm-dialog/confirm-dialog.c
     AlertComponent,
     MainComponent,
     PostListComponent,
-    ConfirmDialogComponent
+    ConfirmDialogComponent,
+    CapitilizePipe,
+    EditPostComponent,
+    FormatDatePipe
   ],
   imports: [
     BrowserModule,

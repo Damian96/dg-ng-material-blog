@@ -4,6 +4,7 @@ import { Post } from "src/app/shared/models/post.model";
 import { PostService } from "../post.service";
 import { AuthService } from "src/app/auth/auth.service";
 import { DialogService } from "src/app/shared/dialog.service";
+import { Router } from "@angular/router";
 
 @Component({
   selector: 'app-post-list',
@@ -11,10 +12,14 @@ import { DialogService } from "src/app/shared/dialog.service";
   styleUrls: ['./post-list.component.scss']
 })
 export class PostListComponent {
-  posts: Array<Post> = [];
+  private posts: Array<Post> = [];
+
+  categoryPosts: Post[] = [];
+  availableCats: string[] = [];
+
   protected userUID: string = '';
 
-  constructor(private _authService: AuthService, private _dialogService: DialogService,
+  constructor(private _authService: AuthService, private _router: Router, private _dialogService: DialogService,
     private _postService: PostService, private cdr: ChangeDetectorRef) {
     this.posts = this._postService.getAllPosts();
 
@@ -24,6 +29,11 @@ export class PostListComponent {
       .subscribe(() => {
         this.userUID = this._authService.isLoggedIn() ? this._authService.user!.uid : '';
       });
+  }
+
+  ngOnInit() {
+    this.availableCats = this.getAvailableCategories();
+    this.filterPostsByCategory(this.availableCats[0]);
   }
 
   deletePost(postId: string, postCreator: string): void {
@@ -45,4 +55,23 @@ export class PostListComponent {
       });
   }
 
+  editPost(postId: string) {
+    this._router.navigateByUrl('/edit-post/' + postId);
+  }
+
+  getAvailableCategories(): string[] {
+    let availableCats: string[] = [];
+
+    this.posts.map((post) => {
+      if (post.category != null && !availableCats.includes(post.category.toString())) {
+        availableCats.push(post.category);
+      }
+    });
+
+    return availableCats;
+  }
+
+  filterPostsByCategory(category: string): void {
+    this.categoryPosts = this.posts.filter((post) => post.category === category);
+  }
 }

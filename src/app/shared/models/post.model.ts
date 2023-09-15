@@ -1,4 +1,3 @@
-import { User } from "@angular/fire/auth";
 import { AbstractControl, ValidatorFn } from "@angular/forms";
 
 export class Post {
@@ -10,7 +9,7 @@ export class Post {
   updatedAt: Date = new Date();
   category: categoryType = null;
 
-  constructor(id: string | null = '0', creator: string, title?: string, content?: string, cat?: categoryType) {
+  constructor(id: string | null = '0', creator: string, title?: string, content?: string, cat?: categoryType, created_at?: Date, updated_at?: Date) {
     if (id !== '0' && id !== null)
       this.id = id.toString();
     else
@@ -26,6 +25,12 @@ export class Post {
 
     if (cat)
       this.category = cat;
+
+    if (created_at)
+      this.createdAt = created_at;
+
+    if (updated_at)
+      this.updatedAt = updated_at;
   }
 }
 
