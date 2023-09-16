@@ -1,6 +1,5 @@
 import { AbstractControl, ValidatorFn } from "@angular/forms";
 import { User } from "firebase/auth";
-import { Like } from "../likes/like.model";
 
 export class Post {
   id: string | null;
@@ -11,7 +10,6 @@ export class Post {
   updatedAt: Date = new Date();
   category: categoryType = null;
   image: string = '';
-  likes: Like[] = [];
 
   lastLikeLocation: number = -1;
 
@@ -21,7 +19,6 @@ export class Post {
     content?: string,
     cat?: categoryType,
     image?: string,
-    likes?: Like[],
     created_at?: Date,
     updated_at?: Date,
   ) {
@@ -49,9 +46,6 @@ export class Post {
 
     if (image)
       this.image = image;
-
-    if (likes)
-      this.likes = likes;
   }
 }
 

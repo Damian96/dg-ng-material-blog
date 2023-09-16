@@ -1,43 +1,84 @@
 import { Injectable } from '@angular/core';
-import { Like } from "./like.model";
 import { Post } from "../post/post.model";
 import { AuthService } from "../auth/auth.service";
 import { PostService } from "../post/post.service";
-import { User } from "firebase/auth";
+
+import * as store from "store";
 
 @Injectable({
   providedIn: 'root'
 })
 export class LikeService {
 
-  constructor(private _authService: AuthService, private _postsService: PostService) { }
+  /**
+   * This approach provides efficient lookups and ensures that a user can only like a post once
+   * (due to the uniqueness of Set elements).
+   * It's suitable for scenarios where you need to track and display likes for posts.
+   */
+  private _postLikes = new Map<string, Set<string>>();
 
-  getPostsLikes(post: Post): Like[] { return [] }
+  private _storageKey: string = 'materialBlogPostLikes';
 
-  addLike(post: Post): void {
-    post.likes.push(new Like(this._authService.user.uid, post.id));
-    this._postsService.updatePost(post);
+  constructor(private _authService: AuthService, private _postsService: PostService) {
+    this._loadFromLocalStorage();
   }
 
-  removeLike(post: Post, user: User = this._authService.user): void {
-    let index = -1;
-    post.likes.forEach((like, i) => {
-      if (like.userId == user.uid) {
-        index = i;
-        return;
-      }
-    });
-    post.likes.splice(index, 1);
-    this._postsService.updatePost(post);
-    return;
+  getPostLikes(post: Post): number {
+    if (this._postLikes.has(post.id)) {
+      return this._postLikes.get(post.id)!.size;
+    }
+    return 0;
   }
 
-  userHasLikedPost(post: Post, user: User = this._authService.user): boolean {
-    for (let like of post.likes) {
-      if (like.userId == user.uid) {
-        return true;
-      }
+  likePost(post: Post, uid: string = this._authService.user.uid): void {
+    if (!this._postLikes.has(post.id)) {
+      this._postLikes.set(post.id, new Set<string>());
+    }
+    this._postLikes.get(post.id).add(uid);
+    this._saveToLocalStorage();
+  }
+
+  unlikePost(post: Post, uid: string = this._authService.user.uid): void {
+    if (this._postLikes.has(post.id)) {
+      this._postLikes.get(post.id)!.delete(uid);
+    }
+    this._saveToLocalStorage();
+  }
+
+  isLikedByUser(post: Post, uid: string = this._authService.user.uid): boolean {
+    if (this._postLikes.has(post.id)) {
+      return this._postLikes.get(post.id).has(uid);
     }
     return false;
+  }
+
+  private _saveToLocalStorage() {
+    const serializableMap = {};
+    for (const [postId, userIdsSet] of this._postLikes) {
+      serializableMap[postId] = Array.from(userIdsSet);
+    }
+
+    store.set(this._storageKey, JSON.stringify(serializableMap));
+  }
+
+  private _loadFromLocalStorage() {
+    const postLikesData = store.get(this._storageKey);
+
+    if (postLikesData) {
+      try {
+        const parsedData = JSON.parse(postLikesData);
+
+        // Reconstruct the Map and Sets from the parsed data
+        for (const postId in parsedData) {
+          if (parsedData.hasOwnProperty(postId)) {
+            const userIdsArray: string[] = parsedData[postId];
+            const userIdsSet = new Set(userIdsArray);
+            this._postLikes.set(postId, userIdsSet);
+          }
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    }
   }
 }

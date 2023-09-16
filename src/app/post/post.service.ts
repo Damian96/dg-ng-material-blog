@@ -26,8 +26,8 @@ export class PostService {
     if (postsData) {
       this.posts = JSON.parse(postsData)
         .map((data:
-          { id: string, creator: User, title: string, content: string, category: categoryType, image: string, likes: Like[], createdAt: Date, updatedAt: Date }
-        ) => new Post(data.id, data.creator, data.title, data.content, data.category, data.image, data.likes, data.createdAt, data.updatedAt));
+          { id: string, creator: User, title: string, content: string, category: categoryType, image: string, createdAt: Date, updatedAt: Date }
+        ) => new Post(data.id, data.creator, data.title, data.content, data.category, data.image, data.createdAt, data.updatedAt));
     }
   }
 

@@ -12,7 +12,7 @@ export class PostCardComponent {
   @Input() post: Post;
   @Input() userUID: string = '';
 
-  likes: number = 0;
+  likes: number;
 
   @Output() editClicked: EventEmitter<string> = new EventEmitter<string>();
   @Output() deleteClicked: EventEmitter<{ postId: string; postCreatorUid: string }> =
@@ -21,7 +21,7 @@ export class PostCardComponent {
   constructor(private _likeService: LikeService) { }
 
   ngOnInit() {
-    this.likes = this.post.likes.length;
+    this.likes = this._likeService.getPostLikes(this.post);
   }
 
   onEditClicked(): void {
@@ -33,11 +33,11 @@ export class PostCardComponent {
   }
 
   onLikeClicked(post: Post): void {
-    if (!this._likeService.userHasLikedPost(post)) {
-      this._likeService.addLike(post);
+    if (!this._likeService.isLikedByUser(post)) {
+      this._likeService.likePost(post);
       this.likes++;
     } else if (this.likes > 0) {
-      this._likeService.removeLike(post);
+      this._likeService.unlikePost(post);
       this.likes--;
     }
   }
