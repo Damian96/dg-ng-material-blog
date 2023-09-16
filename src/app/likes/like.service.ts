@@ -16,9 +16,7 @@ export class LikeService {
 
   addLike(post: Post): void {
     post.likes.push(new Like(this._authService.user.uid, post.id));
-    setTimeout(() => {
-      this._postsService.updatePost(post);
-    }, 1200);
+    this._postsService.updatePost(post);
   }
 
   removeLike(post: Post, user: User = this._authService.user): void {
