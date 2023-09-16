@@ -1,68 +1,35 @@
 <div class="col-lg-10 offset-lg-1 col-md-6 offset-md-3 col-sm-12 mb-4"
   *ngIf="keyword == undefined && filteredPosts.length > 0">
   <div class="row mb-4">
-    <div class="col-12 px-0">
+    <div class="col-12">
       <h2 class="border-bottom border-2 d-inline pb-2">Filter by Category[📁]</h2>
     </div>
   </div>
-  <div class="row flex-row gap-2">
-    <button (click)="filterPostsByCategory(-1)" type="button" class="col flex-grow-0 btn btn-secondary btn-md"
-      title="All">
-      All
-    </button>
-    <button (click)="filterPostsByCurrentUser()" type="button" class="col col-auto btn btn-secondary btn-md"
-      title="Show only my posts" *ngIf="isLoggedIn">
-      My Posts
-    </button>
-    <button type="button" class="col flex-grow-0 btn btn-secondary btn-md" title="{{ category | capitilize }}"
-      *ngFor="let category of availableCats" (click)="filterPostsByCategory(category)">
-      {{ category | capitilize }}
-    </button>
+  <div class="row">
+    <div class="col-12 d-flex flex-row gap-2">
+      <button (click)="filterPostsByCategory(-1)" type="button" class="col flex-grow-0 btn btn-secondary btn-md"
+        title="All">
+        All
+      </button>
+      <button (click)="filterPostsByCurrentUser()" type="button" class="col col-auto btn btn-secondary btn-md"
+        title="Show only my posts" *ngIf="isLoggedIn">
+        My Posts
+      </button>
+      <button type="button" class="col flex-grow-0 btn btn-secondary btn-md" title="{{ category | capitilize }}"
+        *ngFor="let category of availableCats" (click)="filterPostsByCategory(category)">
+        {{ category | capitilize }}
+      </button>
+    </div>
   </div>
 </div>
-
 
 <div class="container-fluid post-list-container" *ngIf="filteredPosts.length > 0" [class.px-0]="keyword == undefined">
   <div class="row">
     <div
-    [ngClass]="{'col-lg-10 offset-lg-1 col-md-6 offset-md-3 col-sm-12 mb-4' : keyword == undefined, 'col-12' : keyword !== undefined}">
+      [ngClass]="{'col-lg-10 offset-lg-1 col-md-6 offset-md-3 col-sm-12 mb-4' : keyword == undefined, 'col-12' : keyword !== undefined}">
       <div class="row container-row">
-        <mat-card class="post-card" *ngFor="let post of filteredPosts">
-          <mat-card-header class="position-relative">
-            <div class="post-card--actions position-absolute pos-abs-top-right" style="top: 35px;">
-              <button (click)="editPost(post.id!)" class="btn btn-light p-2 text-danger me-2"
-                *ngIf="userUID == post.creator.uid">
-                <mat-icon>edit</mat-icon>
-              </button>
-              <button (click)="deletePost(post.id!, post.creator.uid)" class="btn btn-light p-2 text-danger"
-                *ngIf="userUID == post.creator.uid">
-                <mat-icon>delete</mat-icon>
-              </button>
-            </div>
-            <!-- <div mat-card-avatar class="example-header-image"></div> -->
-            <mat-card-title>
-              <strong class="lead">{{ post.title }}</strong>
-            </mat-card-title>
-            <mat-card-subtitle>⬆️{{ post.createdAt | formatDate: 'post-list' }}</mat-card-subtitle>
-            <mat-card-subtitle>
-              <span class="text-primary">📁{{ post.category }}</span>
-            </mat-card-subtitle>
-            <mat-card-subtitle>
-              👤{{ post.creator.email! }}
-            </mat-card-subtitle>
-          </mat-card-header>
-          <!-- <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu"> -->
-          <mat-card-content>
-            <p>
-              <span class="lead">></span>{{ post.content.substr(0, 100) }}<span
-                *ngIf="post.content.length > 100">...</span>
-            </p>
-          </mat-card-content>
-          <mat-card-actions>
-            <!-- <button mat-button>LIKE</button> -->
-            <!-- <button mat-button>SHARE</button> -->
-          </mat-card-actions>
-        </mat-card>
+        <app-post-card *ngFor="let post of filteredPosts" [post]="post" [userUID]="userUID"
+          (editClicked)="editPost($event)" (deleteClicked)="deletePost($event)"></app-post-card>
       </div>
     </div>
   </div>

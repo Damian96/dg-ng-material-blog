@@ -31,6 +31,7 @@ import { FooterComponent } from './layout/footer/footer.component';
 import { SearchPostsComponent } from './post/search-posts/search-posts.component';
 import { BreadcrumbsComponent } from './shared/breadcrumbs/breadcrumbs.component';
 import { SpinnerComponent } from './shared/spinner/spinner.component';
+import { PostCardComponent } from './post/post-card/post-card.component';
 
 @NgModule({
   declarations: [
@@ -50,7 +51,8 @@ import { SpinnerComponent } from './shared/spinner/spinner.component';
     FooterComponent,
     SearchPostsComponent,
     BreadcrumbsComponent,
-    SpinnerComponent
+    SpinnerComponent,
+    PostCardComponent
   ],
   imports: [
     BrowserModule,

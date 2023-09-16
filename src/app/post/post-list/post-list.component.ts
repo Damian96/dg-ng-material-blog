@@ -1,4 +1,4 @@
-import { Component, Input, SimpleChanges } from '@angular/core';
+import { Component, Input, Output, SimpleChanges, EventEmitter } from '@angular/core';
 import { ChangeDetectorRef } from '@angular/core';
 import { Post } from "src/app/shared/models/post.model";
 import { PostService } from "../post.service";
@@ -39,6 +39,7 @@ export class PostListComponent {
 
   ngOnInit() {
     this.availableCats = this.getAvailableCategories();
+    this.filteredPosts = this.posts;
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -64,26 +65,27 @@ export class PostListComponent {
     }
   }
 
-  deletePost(postId: string, postCreator: string): void {
-    if (this._authService.isLoggedIn() && this._authService.user?.uid !== postCreator) {
+  // deletePost(postId: string, postCreatorUid: string): void {
+  deletePost(eventData: { postId: string; postCreatorUid: string }): void {
+    if (this._authService.isLoggedIn() && this._authService.user?.uid !== eventData.postCreatorUid) {
       return;
     }
 
-    this._dialogService.openConfirmationDialog(postId, 'Delete Post.', 'Are you sure you want to delete this post?')
+    this._dialogService.openConfirmationDialog(eventData.postId, 'Delete Post.', 'Are you sure you want to delete this post?')
       .subscribe((result) => {
         if (result === 'confirmed') {
           // User confirmed the action, perform deletion
 
-          this._postService.deletePost(postId);
+          this._postService.deletePost(eventData.postId);
 
-          this.posts = this.posts.filter(post => post.id !== postId);
+          this.posts = this.posts.filter(post => post.id !== eventData.postId);
 
           this.cdr.detectChanges();
         }
       });
   }
 
-  editPost(postId: string) {
+  editPost(postId: string): void {
     this._router.navigateByUrl('/edit-post/' + postId);
   }
 
