@@ -30,6 +30,7 @@ import { FormatDatePipe } from './pipes/format-date.pipe';
 import { FooterComponent } from './layout/footer/footer.component';
 import { SearchPostsComponent } from './post/search-posts/search-posts.component';
 import { BreadcrumbsComponent } from './shared/breadcrumbs/breadcrumbs.component';
+import { SpinnerComponent } from './shared/spinner/spinner.component';
 
 @NgModule({
   declarations: [
@@ -48,7 +49,8 @@ import { BreadcrumbsComponent } from './shared/breadcrumbs/breadcrumbs.component
     FormatDatePipe,
     FooterComponent,
     SearchPostsComponent,
-    BreadcrumbsComponent
+    BreadcrumbsComponent,
+    SpinnerComponent
   ],
   imports: [
     BrowserModule,

@@ -1,7 +1,7 @@
 import { AbstractControl, ValidatorFn } from "@angular/forms";
 
 const allowedOptions = [
-  'title', 'content', 'author'
+  'title', 'content', 'author', 'category'
 ];
 
 // Custom validator function

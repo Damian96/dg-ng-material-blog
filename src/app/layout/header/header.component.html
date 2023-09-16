@@ -10,7 +10,8 @@
       <button mat-icon-button class="search-posts-icon" title="Search Post" aria-label="Search Posts" routerLink="search-posts">
         <mat-icon>search</mat-icon>
       </button>
-      <button mat-icon-button class="add-post-icon" title="Add New Post" aria-label="Add New Post" routerLink="add-post">
+      <button mat-icon-button class="add-post-icon" title="Add New Post" aria-label="Add New Post" routerLink="add-post"
+        *ngIf="isLoggedIn">
         <mat-icon>add</mat-icon>
       </button>
       <button mat-icon-button class="login-icon" title="Login" aria-label="Login" routerLink="login"

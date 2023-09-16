@@ -18,13 +18,10 @@ export class SearchPostsComponent {
 
   searchPostForm: FormGroup = new FormGroup({
     keyword: new FormControl('', [Validators.required, Validators.minLength(3)]),
-    // field: new FormControl('', [Validators.required, searchFieldValidator()])
+    field: new FormControl('', [Validators.required, searchFieldValidator()])
   });
 
-  constructor(
-    private _postsService: PostService
-  ) { }
-
+  constructor() { }
 
 
   onSubmit(): void {
@@ -36,5 +33,10 @@ export class SearchPostsComponent {
 
     this.isSearching = false;
     this.hasSearched = true;
+  }
+
+  onReset(): void {
+    this.isSearching = false;
+    this.hasSearched = false;
   }
 }

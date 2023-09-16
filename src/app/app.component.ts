@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { environment } from "src/environments/environment";
 import { AuthService } from "./auth/auth.service";
 import { MatSnackBar } from "@angular/material/snack-bar";
 
@@ -17,15 +16,13 @@ export class AppComponent {
 
   ngOnInit() {
     this._authService.isUserReady().subscribe(() => {
-      setTimeout(() => {
-        this.finishedLoading = true;
+      this.finishedLoading = true;
 
-        if (this._authService.isLoggedIn()) {
-          this._snackBar.open(`Welcome back, ${this._authService.user?.email}!`, 'Thanks!', {
-            duration: 3000
-          });
-        }
-      }, 500);
+      if (this._authService.isLoggedIn()) {
+        this._snackBar.open(`Welcome back, ${this._authService.user?.email}!`, 'Thanks!', {
+          duration: 3000
+        });
+      }
     });
   }
 

@@ -13,6 +13,7 @@ import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 import { MatSelectModule } from "@angular/material/select";
 import { MatPaginatorModule } from "@angular/material/paginator";
 import { MatDialogModule } from "@angular/material/dialog";
+import { MatRadioModule } from "@angular/material/radio";
 
 @NgModule({
   exports: [
@@ -28,6 +29,7 @@ import { MatDialogModule } from "@angular/material/dialog";
     MatSelectModule,
     MatPaginatorModule,
     MatDialogModule,
+    MatRadioModule
   ]
 })
 export class MaterialModule { }

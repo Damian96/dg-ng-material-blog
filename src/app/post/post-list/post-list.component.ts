@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, SimpleChanges } from '@angular/core';
 import { ChangeDetectorRef } from '@angular/core';
 import { Post } from "src/app/shared/models/post.model";
 import { PostService } from "../post.service";
@@ -39,10 +39,28 @@ export class PostListComponent {
 
   ngOnInit() {
     this.availableCats = this.getAvailableCategories();
+  }
 
-    this.filteredPosts = this.posts;
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['keyword'] || changes['searchField']) {
+      this.updateFilteredPosts();
+    }
+  }
+
+  updateFilteredPosts(): void {
     if (this.keyword !== undefined) {
-      this.filteredPosts = this._postService.filterPostsByTitle(this.keyword);
+
+      switch (this.searchField) {
+        case 'title':
+          this.filteredPosts = this._postService.filterPostsByTitle(this.keyword);
+          break;
+        case 'author':
+          this.filteredPosts = this._postService.filterPostsByAuthor(this.keyword);
+          break;
+        default:
+      }
+    } else {
+      this.filteredPosts = this.posts;
     }
   }
 

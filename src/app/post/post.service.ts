@@ -33,8 +33,13 @@ export class PostService {
     store.set(this._storageKey, JSON.stringify(this.posts));
   }
 
+  /* Search Methods */
   filterPostsByTitle(keyword: string): Post[] {
     return this.getAllPosts().filter((post) => post.title.includes(keyword));
+  }
+
+  filterPostsByAuthor(keyword: string): Post[] {
+    return this.getAllPosts().filter((post) => post.creator.email!.includes(keyword));
   }
 
   /* CRUD */
