@@ -1,11 +1,10 @@
 import { Injectable } from "@angular/core";
 
 import { FirebaseApp } from "@angular/fire/app";
-import { browserLocalPersistence, setPersistence } from "@angular/fire/auth";
 import { Router } from "@angular/router";
 
 import { signOut, getAuth, Auth, User, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
-import { Observable, catchError, from, map, of, switchMap } from 'rxjs';
+import { Observable, Subject, from, map } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -16,6 +15,9 @@ export class AuthService {
 
   showLoginButton = false;
   showLogoutButton = false;
+
+  authStateChanged: Subject<boolean> = new Subject();
+  authStateChanged$: Observable<boolean> = this.authStateChanged.asObservable();
 
   /**
    *
@@ -47,6 +49,7 @@ export class AuthService {
       signInWithEmailAndPassword(this.#auth, email, password)
     ).pipe((map((userCredential) => {
       this.user = userCredential.user;
+      this.authStateChanged.next(true);
       return userCredential.user;
     })));
   }
@@ -54,6 +57,7 @@ export class AuthService {
   logout(): void {
     signOut(this.#auth).then(() => {
       this._router.navigateByUrl('/post-list');
+      this.authStateChanged.next(false);
     });
   }
 }

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectorRef } from '@angular/core';
 import { AuthService } from "src/app/auth/auth.service";
 
 @Component({
@@ -11,7 +11,9 @@ export class HeaderComponent {
   isLoggedIn: boolean = false;
   userEmail: string | null = '';
 
-  constructor(private _authService: AuthService) {
+  constructor(private _authService: AuthService, private _cdr: ChangeDetectorRef) { }
+
+  ngOnInit() {
     this._authService.isUserReady()
       .subscribe(() => {
         this.isLoggedIn = this._authService.isLoggedIn();
@@ -19,6 +21,10 @@ export class HeaderComponent {
           this.userEmail = this._authService.user!.email;
         }
       });
-  }
 
+    this._authService.authStateChanged$.subscribe((authState: boolean) => {
+      this.isLoggedIn = authState;
+      this._cdr.detectChanges();
+    });
+  }
 }

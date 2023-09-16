@@ -13,14 +13,14 @@ import { SearchPostsComponent } from "./post/search-posts/search-posts.component
 const routes: Routes = [
   { path: '', component: PostListComponent },
 
-  { path: 'add-post', component: CreatePostComponent, canActivate: [AuthGuard] },
-  { path: 'edit-post/:id', component: EditPostComponent, canActivate: [AuthGuard] },
+  { path: 'add-post', component: CreatePostComponent, canActivate: [AuthGuard], data: { breadcrumb: 'Add Post' } },
+  { path: 'edit-post/:id', component: EditPostComponent, canActivate: [AuthGuard], data: { breadcrumb: 'Edit Post' } },
   { path: 'post-list', component: PostListComponent, canActivate: [AuthGuard] },
-  { path: 'search-posts', component: SearchPostsComponent, canActivate: [AuthGuard] },
+  { path: 'search-posts', component: SearchPostsComponent, canActivate: [AuthGuard], data: { breadcrumb: 'Search Posts' } },
 
-  { path: 'login', component: LoginComponent },
-  { path: 'logout', component: LogoutComponent },
-  { path: 'register', component: RegisterComponent },
+  { path: 'login', component: LoginComponent, data: { breadcrumb: 'Login' } },
+  { path: 'logout', component: LogoutComponent, data: { breadcrumb: 'Logout' } },
+  { path: 'register', component: RegisterComponent, data: { breadcrumb: 'Register' } },
 
 ];
 
