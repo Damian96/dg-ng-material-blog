@@ -1,12 +1,14 @@
 <mat-card class="post-card">
+  <mat-card-header *ngIf="post.image != null">
+    <img mat-card-image [src]="post.image" alt="{{ post.creator.email}}" class="d-inline-block mx-auto">
+  </mat-card-header>
+
   <mat-card-header class="position-relative">
     <div class="post-card--actions position-absolute pos-abs-top-right" style="top: 35px;">
-      <button (click)="onEditClicked()" class="btn btn-light p-2 text-danger me-2"
-        *ngIf="userUID == post.creator.uid">
+      <button (click)="onEditClicked()" class="btn btn-light p-2 text-danger me-2" *ngIf="userUID == post.creator.uid">
         <mat-icon>edit</mat-icon>
       </button>
-      <button (click)="onDeleteClicked()" class="btn btn-light p-2 text-danger"
-        *ngIf="userUID == post.creator.uid">
+      <button (click)="onDeleteClicked()" class="btn btn-light p-2 text-danger" *ngIf="userUID == post.creator.uid">
         <mat-icon>delete</mat-icon>
       </button>
     </div>
@@ -22,17 +24,15 @@
       👤{{ post.creator.email! }}
     </mat-card-subtitle>
   </mat-card-header>
-  <div *ngIf="post.image != null">
-    <img mat-card-image [src]="post.image" alt="{{ post.creator.email}}">
-  </div>
+
   <mat-card-content>
     <p>
-      <span class="lead">></span>{{ post.content.substr(0, 100) }}<span
-        *ngIf="post.content.length > 100">...</span>
+      <span class="lead">></span>{{ post.content.substr(0, 100) }}<span *ngIf="post.content.length > 100">...</span>
     </p>
   </mat-card-content>
+
   <mat-card-actions>
-    <!-- <button mat-button>LIKE</button> -->
+    <button mat-button (click)="onLikeClicked(post)">👍 &bull; [{{ likes }}]</button>
     <!-- <button mat-button>SHARE</button> -->
   </mat-card-actions>
 </mat-card>

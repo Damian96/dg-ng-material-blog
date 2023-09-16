@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { PostService } from "../post.service";
-import { Post } from "src/app/shared/models/post.model";
+import { Post } from "src/app/post/post.model";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { searchFieldValidator } from "src/app/shared/validators/search.validators";
 

@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { AuthService } from "src/app/auth/auth.service";
 import { PostService } from "../post.service";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
-import { Post, categoryTypeArray, categoryValidator } from "src/app/shared/models/post.model";
+import { Post, categoryTypeArray, categoryValidator } from "src/app/post/post.model";
 import { ActivatedRoute, Router } from "@angular/router";
 import { MatSnackBar } from "@angular/material/snack-bar";
 

@@ -1,4 +1,4 @@
-<div class="col-lg-10 offset-lg-1 col-md-6 offset-md-3 col-sm-12 mb-4"
+<div class="col-lg-10 offset-lg-1 col-md-6 offset-md-3 col-sm-12 mb-4 px-lg-2"
   *ngIf="keyword == undefined && filteredPosts.length > 0">
   <div class="row mb-4">
     <div class="col-12">
@@ -6,7 +6,7 @@
     </div>
   </div>
   <div class="row">
-    <div class="col-12 d-flex flex-row gap-2">
+    <div class="col-12 d-flex flex-wrap gap-2">
       <button (click)="filterPostsByCategory(-1)" type="button" class="col flex-grow-0 btn btn-secondary btn-md"
         title="All">
         All
@@ -24,7 +24,7 @@
 </div>
 
 <div class="container-fluid post-list-container" *ngIf="filteredPosts.length > 0" [class.px-0]="keyword == undefined">
-  <div class="row">
+  <div class="row mx-0">
     <div
       [ngClass]="{'col-lg-10 offset-lg-1 col-md-6 offset-md-3 col-sm-12 mb-4' : keyword == undefined, 'col-12' : keyword !== undefined}">
       <div class="row container-row">

@@ -1,10 +1,11 @@
-import { Component, Input, Output, SimpleChanges, EventEmitter } from '@angular/core';
+import { Component, Input, SimpleChanges, OnDestroy } from '@angular/core';
 import { ChangeDetectorRef } from '@angular/core';
-import { Post } from "src/app/shared/models/post.model";
+import { Post } from "src/app/post/post.model";
 import { PostService } from "../post.service";
 import { AuthService } from "src/app/auth/auth.service";
 import { DialogService } from "src/app/shared/dialog.service";
 import { Router } from "@angular/router";
+import { LikeService } from "src/app/likes/like.service";
 
 @Component({
   selector: 'app-post-list',
@@ -24,8 +25,12 @@ export class PostListComponent {
 
   protected userUID: string = '';
 
-  constructor(private _authService: AuthService, private _router: Router, private _dialogService: DialogService,
-    private _postService: PostService, private cdr: ChangeDetectorRef) {
+  constructor(private _authService: AuthService,
+    private _router: Router,
+    private _dialogService: DialogService,
+    private _postService: PostService,
+    private _likeService: LikeService,
+    private cdr: ChangeDetectorRef) {
     this.posts = this._postService.getAllPosts();
 
     console.log(this.posts);

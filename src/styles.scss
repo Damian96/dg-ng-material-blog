@@ -19,7 +19,6 @@ body {
 }
 
 main {
-  margin-top: 100px;
   min-height: 80vh;
 }
 
@@ -40,17 +39,21 @@ $primaryMat: #673ab7;
   color: $primaryMat;
 }
 
-.color-accent-mat {
-}
+.color-accent-mat {}
 
 .bg-primary-mat {
   background-color: $primaryMat;
   color: white;
 }
 
-.bg-accent-mat {
-}
+.bg-accent-mat {}
 
 .text-white {
   color: white !important;
+}
+
+@media only screen and (max-width: 600px) {
+  body {
+    overflow-x: hidden;
+  }
 }

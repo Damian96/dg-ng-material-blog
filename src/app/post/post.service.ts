@@ -1,9 +1,11 @@
 import { Injectable } from '@angular/core';
 
 import * as store from "store";
-import { Post, categoryType } from "../shared/models/post.model";
+import { Post, categoryType } from "./post.model";
 import { User } from "@angular/fire/auth";
 import { FileRenderPipe } from "../pipes/file-render.pipe";
+import { Like } from "../likes/like.model";
+
 
 @Injectable({
   providedIn: 'root'
@@ -24,8 +26,8 @@ export class PostService {
     if (postsData) {
       this.posts = JSON.parse(postsData)
         .map((data:
-          { id: string, creator: User, title: string, content: string, category: categoryType, image: string, createdAt: Date, updatedAt: Date }
-        ) => new Post(data.id, data.creator, data.title, data.content, data.category, data.image, data.createdAt, data.updatedAt));
+          { id: string, creator: User, title: string, content: string, category: categoryType, image: string, likes: Like[], createdAt: Date, updatedAt: Date }
+        ) => new Post(data.id, data.creator, data.title, data.content, data.category, data.image, data.likes, data.createdAt, data.updatedAt));
     }
   }
 
@@ -67,8 +69,11 @@ export class PostService {
 
     if (index !== -1) {
       this.posts[index] = { ...updatedPost };
+    } else {
+      console.warn(`Could not update post with ID: ${updatedPost.id}`)
     }
     this.savePostsToLocalStorage();
+    console.log(`Updated post with ID: ${updatedPost.id}...`);
   }
 
   deletePost(id: string): void {
