@@ -4,7 +4,7 @@
       <mat-card-title>Edit Post <{{ post!.title }}>
       </mat-card-title>
     </mat-card-header>
-    <mat-card-content>
+    <mat-card-content *ngIf="finishedLoading">
       <form [formGroup]="editPostForm" (ngSubmit)="onSubmit()" class="container py-4">
 
         <div class="row pb-3">
@@ -50,6 +50,13 @@
             *ngIf="editPostForm.get('category')?.touched && editPostForm.get('category')?.hasError('invalidCategory')">
             The Category is invalid.
           </mat-error>
+        </div>
+
+        <div class="row pb-3">
+          <app-file-input label="Post Image" (fileSelected)="onFileSelected($event)"></app-file-input>
+          <div *ngIf="editPostForm.get('image').value.selectedFile != null">
+            Selected File: {{ editPostForm.get('image').value.selectedFile.name }}
+          </div>
         </div>
 
         <button mat-raised-button color="primary" type="submit" [disabled]="editPostForm.invalid">Update Post</button>

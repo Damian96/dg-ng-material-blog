@@ -9,7 +9,8 @@
         <div class="row pb-3">
           <mat-form-field appearance="fill">
             <mat-label autofocus="true">Title</mat-label>
-            <input autofocus matInput formControlName="title" type="text" placeholder="Your Post's title" required tabindex="1" />
+            <input autofocus matInput formControlName="title" type="text" placeholder="Your Post's title" required
+              tabindex="1" />
           </mat-form-field>
           <mat-error *ngIf="createPostForm.get('title')?.touched && createPostForm.get('title')?.hasError('required')">
             The Title is required.
@@ -53,7 +54,16 @@
           </mat-error>
         </div>
 
-        <button mat-raised-button color="primary" type="submit" [disabled]="createPostForm.invalid" tabindex="4">Create Post</button>
+        <div class="row pb-3">
+          <label>Post Image</label>
+          <app-file-input fileSelected="onFileSelected"></app-file-input>
+          <div *ngIf="createPostForm.get('selectedFile').value != null">
+            Selected File: {{ createPostForm.get('selectedFile').value.name }}
+          </div>
+        </div>
+
+        <button mat-raised-button color="primary" type="submit" [disabled]="createPostForm.invalid" tabindex="4">Create
+          Post</button>
 
       </form>
     </mat-card-content>

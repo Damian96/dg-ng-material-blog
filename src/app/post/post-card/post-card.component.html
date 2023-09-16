@@ -22,7 +22,9 @@
       👤{{ post.creator.email! }}
     </mat-card-subtitle>
   </mat-card-header>
-  <!-- <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu"> -->
+  <div *ngIf="post.image != null">
+    <img mat-card-image [src]="post.image" alt="{{ post.creator.email}}">
+  </div>
   <mat-card-content>
     <p>
       <span class="lead">></span>{{ post.content.substr(0, 100) }}<span

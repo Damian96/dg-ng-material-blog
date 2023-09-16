@@ -9,8 +9,17 @@ export class Post {
   createdAt: Date = new Date();
   updatedAt: Date = new Date();
   category: categoryType = null;
+  image: string;
 
-  constructor(id: string | null = '0', creator: User, title?: string, content?: string, cat?: categoryType, created_at?: Date, updated_at?: Date) {
+  constructor(
+    id: string | null = '0',
+    creator: User, title?: string,
+    content?: string,
+    cat?: categoryType,
+    image?: string,
+    created_at?: Date,
+    updated_at?: Date,
+  ) {
     if (id !== '0' && id !== null)
       this.id = id.toString();
     else
@@ -32,6 +41,9 @@ export class Post {
 
     if (updated_at)
       this.updatedAt = updated_at;
+
+    if (image)
+      this.image = image;
   }
 }
 

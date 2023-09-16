@@ -1,0 +1,4 @@
+<div [formGroup]="fileFormGroup">
+  <label class="control-label">{{ label }}</label>
+  <input class="form-control" type="file" (change)="onFileSelected($event)" [accept]="accept" />
+</div>

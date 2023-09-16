@@ -32,6 +32,8 @@ import { SearchPostsComponent } from './post/search-posts/search-posts.component
 import { BreadcrumbsComponent } from './shared/breadcrumbs/breadcrumbs.component';
 import { SpinnerComponent } from './shared/spinner/spinner.component';
 import { PostCardComponent } from './post/post-card/post-card.component';
+import { FileInputComponent } from './shared/file-input/file-input.component';
+import { FileRenderPipe } from './pipes/file-render.pipe';
 
 @NgModule({
   declarations: [
@@ -52,7 +54,9 @@ import { PostCardComponent } from './post/post-card/post-card.component';
     SearchPostsComponent,
     BreadcrumbsComponent,
     SpinnerComponent,
-    PostCardComponent
+    PostCardComponent,
+    FileInputComponent,
+    FileRenderPipe
   ],
   imports: [
     BrowserModule,
@@ -67,7 +71,9 @@ import { PostCardComponent } from './post/post-card/post-card.component';
     AngularFireAuthModule,
     BootstrapModule
   ],
-  providers: [],
+  providers: [
+    FileRenderPipe
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

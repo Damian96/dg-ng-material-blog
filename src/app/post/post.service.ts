@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import * as store from "store";
 import { Post, categoryType } from "../shared/models/post.model";
 import { User } from "@angular/fire/auth";
+import { FileRenderPipe } from "../pipes/file-render.pipe";
 
 @Injectable({
   providedIn: 'root'
@@ -12,9 +13,8 @@ export class PostService {
   private _storageKey: string = 'materialBlogPosts';
   posts: Array<Post> = [];
 
-  constructor() {
+  constructor(private _fileRenderPipe: FileRenderPipe) {
     this.loadPostsFromLocalStorage();
-
   }
 
   /* Read & Write to LocalStorage */
@@ -24,8 +24,8 @@ export class PostService {
     if (postsData) {
       this.posts = JSON.parse(postsData)
         .map((data:
-          { id: string, creator: User, title: string, content: string, createdAt: Date, updatedAt: Date, category: categoryType }
-        ) => new Post(data.id, data.creator, data.title, data.content, data.category, data.createdAt, data.updatedAt));
+          { id: string, creator: User, title: string, content: string, category: categoryType, image: string, createdAt: Date, updatedAt: Date }
+        ) => new Post(data.id, data.creator, data.title, data.content, data.category, data.image, data.createdAt, data.updatedAt));
     }
   }
 
@@ -54,9 +54,12 @@ export class PostService {
 
   addPost(post: Post): void {
     // post.id = generatePostUID();
-
     this.posts.push(post);
     this.savePostsToLocalStorage();
+  }
+
+  convertFileToDataURL(file: File): Promise<string> {
+    return this._fileRenderPipe.transform(file);
   }
 
   updatePost(updatedPost: Post): void {

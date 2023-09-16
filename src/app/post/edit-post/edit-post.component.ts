@@ -17,7 +17,7 @@ export class EditPostComponent {
   post: Post | undefined;
   categoryTypes: string[] = categoryTypeArray;
 
-  editPostForm: FormGroup = new FormGroup({});
+  editPostForm: FormGroup;
 
   constructor(private _authService: AuthService, private _postsService: PostService, private _router: Router, private _snackBar: MatSnackBar, private _route: ActivatedRoute) { }
 
@@ -28,12 +28,21 @@ export class EditPostComponent {
       this.editPostForm = new FormGroup({
         title: new FormControl(this.post!.title, [Validators.required, Validators.minLength(5)]),
         content: new FormControl(this.post!.content, [Validators.required, Validators.minLength(10)]),
-        category: new FormControl(this.post!.category, [Validators.required, categoryValidator()])
+        category: new FormControl(this.post!.category, [Validators.required, categoryValidator()]),
+        image: new FormControl({ selectedFile: null })
       });
-
 
       this.finishedLoading = true;
     });
+  }
+
+  onFileSelected(eventData: File | false): void {
+    console.log(eventData, 'editPost');
+    if (eventData instanceof File) {
+      this.editPostForm.get('image').setValue({ selectedFile: eventData });
+    } else {
+      this.editPostForm.get('image').setErrors({ invalidFile: true });
+    }
   }
 
   onSubmit(): void {
@@ -46,12 +55,16 @@ export class EditPostComponent {
     this.post!.category = this.editPostForm!.get('category')?.value;
     this.post!.updatedAt = new Date();
 
-    this._postsService.updatePost(this.post!);
-    this._snackBar.open('Your post has been updated', 'Go to Blog Home', {
-      duration: 5000,
-    }).afterDismissed().subscribe(() => {
-      this._router.navigateByUrl('/post-list');
-    })
+    this._postsService.convertFileToDataURL(this.editPostForm!.get('image').value.selectedFile)
+      .then((dataUrl: string) => {
+        this.post!.image = dataUrl;
+        this._postsService.updatePost(this.post!);
+        this._snackBar.open('Your post has been updated', 'Go to Blog Home', {
+          duration: 5000,
+        }).afterDismissed().subscribe(() => {
+          this._router.navigateByUrl('/post-list');
+        })
+      });
 
   }
 }
