@@ -1,5 +1,4 @@
 import { Component, Input, SimpleChanges } from '@angular/core';
-import { ChangeDetectorRef } from '@angular/core';
 import { Post } from "src/app/post/post.model";
 import { PostService } from "../post.service";
 import { AuthService } from "src/app/auth/auth.service";
@@ -28,6 +27,8 @@ export class PostListComponent {
   protected userUID: string = '';
   protected userEmail: string = '';
 
+  private _postsQueue: PostPriorityQueue;
+
   sortingAlgos: Array<{ value: sortingAlgos, title: string }> = [
     {
       value: 'titleAsc',
@@ -36,7 +37,15 @@ export class PostListComponent {
     {
       value: 'titleDesc',
       title: 'Title Desc ⬇️',
-    }
+    },
+    {
+      value: 'dateCreatedAsc',
+      title: 'Date Posted Asc ⬆️',
+    },
+    {
+      value: 'dateCreatedDesc',
+      title: 'Date Posted Desc ⬇️',
+    },
   ];
 
   constructor(private _authService: AuthService,
@@ -45,8 +54,7 @@ export class PostListComponent {
     private _postService: PostService
   ) {
     this._posts = this._postService.getAllPosts();
-
-    // console.log(this.posts);
+    this._postsQueue = new PostPriorityQueue(this._posts, 'titleAsc');
 
     this._authService.isUserReady()
       .subscribe(() => {
@@ -134,7 +142,6 @@ export class PostListComponent {
   }
 
   onSortSelect(event: MatSelectChange) {
-    const sortedPosts = new PostPriorityQueue(this._posts, event.value);
-    this.filteredPosts = sortedPosts.getPostsArray();
+    this.filteredPosts = this._postsQueue.sort(event.value as sortingAlgos);
   }
 }

@@ -5,8 +5,11 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class FormatDatePipe implements PipeTransform {
 
-  transform(value: Date | string, ...args: string[]): string {
-    const date = typeof value === 'string' ? new Date(value) : value;
+  transform(value: number, ...args: string[]): string {
+    const date = typeof value === 'number' ? new Date(value) : null;
+
+    if (date == null)
+      return 'null';
 
     if (args.includes('post-list')) {
       const year = date.getFullYear();

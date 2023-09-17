@@ -53,12 +53,15 @@ export class EditPostComponent {
     this.post!.title = this.editPostForm!.get('title')?.value;
     this.post!.content = this.editPostForm!.get('content')?.value;
     this.post!.category = this.editPostForm!.get('category')?.value;
-    this.post!.updatedAt = new Date();
+    this.post!.updatedAt = new Date().getTime();
 
     this._postsService.convertFileToDataURL(this.editPostForm!.get('image').value.selectedFile)
       .then((dataUrl: string) => {
-        this.post!.image = dataUrl;
+        if (dataUrl) {
+          this.post!.image = dataUrl;
+        }
         this._postsService.updatePost(this.post!);
+
         this._snackBar.open('Your post has been updated', 'Go to Blog Home', {
           duration: 5000,
         }).afterDismissed().subscribe(() => {

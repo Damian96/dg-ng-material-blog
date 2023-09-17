@@ -2,15 +2,14 @@ import { AbstractControl, ValidatorFn } from "@angular/forms";
 import { User } from "firebase/auth";
 import { CommentTreeNode } from "../comments/comment.models";
 import { Queue } from "js-sdsl";
-import { AutoBind } from "../shared/autobind.decorator";
 
 export class Post {
   id: string | null;
   creator: User;
   title: string = '';
   content: string = '';
-  createdAt: Date = new Date();
-  updatedAt: Date = new Date();
+  createdAt: number;
+  updatedAt: number;
   category: categoryType = null;
   image: string = '';
   comments: CommentTreeNode | null;
@@ -24,8 +23,8 @@ export class Post {
     content?: string,
     cat?: categoryType,
     image?: string,
-    created_at?: Date,
-    updated_at?: Date,
+    created_at?: number,
+    updated_at?: number,
     comments?: CommentTreeNode,
   ) {
     if (id !== '0' && id !== null)
@@ -46,9 +45,13 @@ export class Post {
 
     if (created_at)
       this.createdAt = created_at;
+    else
+      this.createdAt = new Date().getTime();
 
     if (updated_at)
       this.updatedAt = updated_at;
+    else
+      this.updatedAt = new Date().getTime();
 
     if (image)
       this.image = image;
@@ -87,29 +90,36 @@ export function generatePostUID() {
   return `${timestamp}-${randomPart}`;
 }
 
-export type sortingAlgos = 'titleAsc' | 'titleDesc';
+export type sortingAlgos = 'titleAsc' | 'titleDesc' | 'dateCreatedAsc' | 'dateCreatedDesc';
 
 export class PostPriorityQueue {
 
   algo: sortingAlgos = 'titleAsc';
   posts: Queue<Post> = new Queue<Post>();
-  private _postsArr: Post[];
+  private _postsArr: Post[] = [];
 
   constructor(posts: Post[], algo?: sortingAlgos) {
     this.algo = algo;
-    this._postsArr = posts.sort(this.comparator);
+    this._postsArr = posts;
+    this.sort(algo);
     this._arrayToQueue();
   }
 
   add(post: Post): void {
     this.posts.push(post);
     this._postsArr.push(post);
-    this._postsArr = this._postsArr.sort(this.comparator); // Maintain the sorting order
-    this._arrayToQueue();
+    this.sort(this.algo);
   }
 
   getPostsArray(): Post[] {
     return this._postsArr.slice();
+  }
+
+  sort(algo: sortingAlgos): Post[] {
+    this.algo = algo;
+    this._postsArr.sort(this.comparator);
+    this._arrayToQueue();
+    return this._postsArr;
   }
 
   private _arrayToQueue() {
@@ -120,21 +130,47 @@ export class PostPriorityQueue {
   }
 
   private comparator = (postA: Post, postB: Post): number => {
-    const titleA = postA.title.toLowerCase();
-    const titleB = postB.title.toLowerCase();
-    switch (this.algo) {
-      case 'titleAsc':
-        if (titleA < titleB)
-          return -1;
-        if (titleA > titleB)
-          return 1;
-        return 0;
-      case 'titleDesc':
-        if (titleA < titleB)
-          return 1;
-        if (titleA > titleB)
-          return -1;
-        return 0;
+    // console.log(this);
+    // return 0;
+    if (this.algo.includes('title')) {
+      const titleA = postA.title.toLowerCase();
+      const titleB = postB.title.toLowerCase();
+      switch (this.algo) {
+        case 'titleAsc':
+          if (titleA < titleB)
+            return -1;
+          if (titleA > titleB)
+            return 1;
+          return 0;
+        case 'titleDesc':
+          if (titleA < titleB)
+            return 1;
+          if (titleA > titleB)
+            return -1;
+          return 0;
+      }
     }
+
+    if (this.algo.includes('dateCreated')) {
+      const dateA = postA.createdAt;
+      const dateB = postB.createdAt;
+
+      switch (this.algo) {
+        case 'dateCreatedAsc':
+          if (dateA < dateB)
+            return -1;
+          if (dateA > dateB)
+            return 1;
+          return 0;
+        case 'dateCreatedDesc':
+          if (dateA < dateB)
+            return 1;
+          if (dateA > dateB)
+            return -1;
+          return 0;
+      }
+    }
+
+    return 0;
   }
 }
