@@ -1,13 +1,16 @@
 import { User } from "firebase/auth";
-import { Post } from "../post/post.model";
+import { Post, generatePostUID } from "../post/post.model";
 
 export class Comment {
+  cid: string;
   useremail: string;
   postId: string;
   content: string = '';
   createdAt: number = new Date().getTime();
 
   constructor(useremail: string, postId: string, content: string) {
+    this.cid = generatePostUID();
+
     this.useremail = useremail;
     this.postId = postId;
     this.content = content;

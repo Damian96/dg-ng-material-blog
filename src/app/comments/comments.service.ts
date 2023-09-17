@@ -12,7 +12,7 @@ export class CommentsService {
   constructor() {
     this._commentsMap = this.loadMapFromLocalStorage();
 
-    console.log(this._commentsMap);
+    // console.log(this._commentsMap);
   }
 
   addComment(comment: Comment): CommentTreeNode {
@@ -28,17 +28,28 @@ export class CommentsService {
     return commentTree;
   }
 
+  deleteComment(comment: Comment): boolean {
+    const result = this._commentsMap.delete(comment.postId);
+    this.saveMapToLocalStorage();
+    return result;
+  }
+
   /* Search */
   findCommentsForPost(postid: string): CommentTreeNode | false {
     if (this._commentsMap.has(postid)) {
-      return this._commentsMap.get(postid);
+      const result = this._commentsMap.get(postid);
+      let treeNode = new CommentTreeNode(null, [], postid);
+      if (typeof result === 'string') {
+        treeNode = CommentTreeNode.fromJSON(result);
+      }
+      this._commentsMap.set(postid, treeNode);
+      return treeNode;
     } else {
       return false;
     }
   }
 
   /* Local Storage Operations */
-  // Save data to local storage
   saveMapToLocalStorage(): void {
     try {
       const serializedData = JSON.stringify(Array.from(this._commentsMap.entries()));
@@ -48,7 +59,6 @@ export class CommentsService {
     }
   }
 
-  // Load data from local storage as a Map
   loadMapFromLocalStorage<CommentTreeNode>(): Map<string, CommentTreeNode> | null {
     try {
       const serializedData = store.get('materialBlogComments', JSON.stringify([[]]));

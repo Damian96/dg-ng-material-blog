@@ -1,4 +1,4 @@
-import { Component, Input, EventEmitter, Output } from '@angular/core';
+import { Component, Input, EventEmitter, Output, ChangeDetectorRef } from '@angular/core';
 import { Post } from "src/app/post/post.model";
 import { LikeService } from "src/app/likes/like.service";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
@@ -14,6 +14,7 @@ import { AuthService } from "src/app/auth/auth.service";
 export class PostCardComponent {
 
   @Input() post: Post;
+  @Input() userEmail: string = '';
   @Input() userUID: string = '';
 
   likeCount: number;
@@ -29,6 +30,7 @@ export class PostCardComponent {
 
   constructor(private _likeService: LikeService,
     private _authService: AuthService,
+    private _cdr: ChangeDetectorRef,
     private _commentService: CommentsService) { }
 
   ngOnInit() {
@@ -62,6 +64,19 @@ export class PostCardComponent {
     }
   }
 
+  onCommentDelete(needle: Comment): void {
+    let index = this.comments.findIndex((comment) => {
+      return comment.cid == needle.cid;
+    });
+
+    this.comments.splice(index, 1);
+    this._commentService.deleteComment(needle);
+  }
+
+  isCommentAuthor(useremail: string, comment: Comment): boolean {
+    return comment.useremail === useremail;
+  }
+
   onSubmit(): void {
     if (this.postCommentForm.invalid) {
       return;
@@ -74,6 +89,7 @@ export class PostCardComponent {
     const commentTree = this._commentService.addComment(comment);
 
     this.comments = commentTree.comments;
+    this.onReset();
   }
 
   onReset(): void {

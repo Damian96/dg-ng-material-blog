@@ -28,7 +28,8 @@
     <div
       [ngClass]="{'col-lg-10 offset-lg-1 col-md-6 offset-md-3 col-sm-12 mb-4' : keyword == undefined, 'col-12' : keyword !== undefined}">
       <div class="row container-row">
-        <app-post-card *ngFor="let post of filteredPosts" [post]="post" [userUID]="userUID"
+        <app-post-card *ngFor="let post of filteredPosts" [post]="post"
+          [userUID]="userUID" [userEmail]="userEmail"
           (editClicked)="editPost($event)" (deleteClicked)="deletePost($event)"></app-post-card>
       </div>
     </div>

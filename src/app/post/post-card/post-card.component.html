@@ -1,17 +1,18 @@
-<mat-card class="post-card">
+<mat-card class="post-card position-relative">
   <mat-card-header *ngIf="post.image != null && post.image.length">
     <img mat-card-image [src]="post.image" alt="{{ post.creator.email}}" class="d-inline-block mx-auto">
   </mat-card-header>
 
-  <mat-card-header class="position-relative">
-    <div class="post-card--actions position-absolute pos-abs-top-right" style="top: 35px;">
-      <button (click)="onEditClicked()" class="btn btn-light p-2 text-danger me-2" *ngIf="userUID == post.creator.uid">
-        <mat-icon>edit</mat-icon>
-      </button>
-      <button (click)="onDeleteClicked()" class="btn btn-light p-2 text-danger" *ngIf="userUID == post.creator.uid">
-        <mat-icon>delete</mat-icon>
-      </button>
-    </div>
+  <div class="post-card--actions position-absolute pos-abs-top-right" style="top: 35px;">
+    <button (click)="onEditClicked()" class="btn btn-light p-2 text-danger me-2" *ngIf="userUID == post.creator.uid">
+      <mat-icon>edit</mat-icon>
+    </button>
+    <button (click)="onDeleteClicked()" class="btn btn-light p-2 text-danger" *ngIf="userUID == post.creator.uid">
+      <mat-icon>delete</mat-icon>
+    </button>
+  </div>
+
+  <mat-card-header>
     <!-- <div mat-card-avatar class="example-header-image"></div> -->
     <mat-card-title>
       <a href="/post/{{ post.id }}" title="View Post">
@@ -53,7 +54,7 @@
   <mat-card-footer *ngIf="comments.length">
     <div class="container-fluid">
       <div class="row">
-        <div class="card comment-card" *ngFor="let comment of comments">
+        <div class="card comment-card position-relative" *ngFor="let comment of comments">
           <div class="card-body">
             <p>{{ comment.content }}</p>
 
@@ -62,6 +63,13 @@
                 <p class="small mb-0 ms-2">{{ comment.useremail }}</p>
               </div>
             </div>
+          </div>
+
+          <div class="post-card--actions position-absolute pos-abs-top-right" style="top: 35px;"
+            *ngIf="isCommentAuthor(userEmail, comment)">
+            <button (click)="onCommentDelete(comment)" class="btn btn-light p-2 text-danger" *ngIf="userEmail == comment.useremail">
+              <mat-icon>delete</mat-icon>
+            </button>
           </div>
         </div>
       </div>

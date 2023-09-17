@@ -24,6 +24,7 @@ export class PostListComponent {
   isLoggedIn: boolean = false;
 
   protected userUID: string = '';
+  protected userEmail: string = '';
 
   constructor(private _authService: AuthService,
     private _router: Router,
@@ -38,6 +39,7 @@ export class PostListComponent {
     this._authService.isUserReady()
       .subscribe(() => {
         this.userUID = this._authService.isLoggedIn() ? this._authService.user!.uid : '';
+        this.userEmail = this._authService.user.email;
         this.isLoggedIn = this._authService.isLoggedIn();
       });
   }

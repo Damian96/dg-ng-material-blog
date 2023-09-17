@@ -1,13 +1,15 @@
 .container-row {
   display: flex;
+  flex-flow: column wrap;
   justify-content: flex-start;
   align-items: center;
-  gap: 35px 2.25vw;
+  gap: 5vh 0;
 
   app-post-card {
-    width: 15.90vw;
-    max-width: calc(max(150px, 33.33vw));
-    min-width: calc(min(380px, 90%));
+    width: 60vw;
+    // width: 15.90vw;
+    // max-width: calc(max(150px, 33.33vw));
+    // min-width: calc(min(380px, 90%));
   }
 }
 
