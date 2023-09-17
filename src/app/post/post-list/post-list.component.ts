@@ -1,11 +1,13 @@
-import { Component, Input, SimpleChanges, OnDestroy } from '@angular/core';
+import { Component, Input, SimpleChanges } from '@angular/core';
 import { ChangeDetectorRef } from '@angular/core';
 import { Post } from "src/app/post/post.model";
 import { PostService } from "../post.service";
 import { AuthService } from "src/app/auth/auth.service";
 import { DialogService } from "src/app/shared/dialog.service";
 import { Router } from "@angular/router";
-import { LikeService } from "src/app/likes/like.service";
+import { sortingAlgos } from "src/app/post/post.model";
+import { MatSelectChange } from "@angular/material/select";
+import { PostPriorityQueue } from "src/app/post/post.model";
 
 @Component({
   selector: 'app-post-list',
@@ -26,11 +28,22 @@ export class PostListComponent {
   protected userUID: string = '';
   protected userEmail: string = '';
 
+  sortingAlgos: Array<{ value: sortingAlgos, title: string }> = [
+    {
+      value: 'titleAsc',
+      title: 'Title Asc ⬆️',
+    },
+    {
+      value: 'titleDesc',
+      title: 'Title Desc ⬇️',
+    }
+  ];
+
   constructor(private _authService: AuthService,
     private _router: Router,
     private _dialogService: DialogService,
-    private _postService: PostService,
-    private cdr: ChangeDetectorRef) {
+    private _postService: PostService
+  ) {
     this._posts = this._postService.getAllPosts();
 
     // console.log(this.posts);
@@ -71,7 +84,6 @@ export class PostListComponent {
     }
   }
 
-  // deletePost(postId: string, postCreatorUid: string): void {
   deletePost(eventData: { postId: string; postCreatorUid: string }): void {
     if (this._authService.isLoggedIn() && this._authService.user?.uid !== eventData.postCreatorUid) {
       return;
@@ -87,7 +99,7 @@ export class PostListComponent {
             return post.id === eventData.postId;
           });
           if (index !== -1) {
-            this._posts = this._posts.splice(index, 1);
+            this._posts.splice(index, 1);
           }
         }
       });
@@ -119,5 +131,10 @@ export class PostListComponent {
 
   filterPostsByCurrentUser() {
     this.filteredPosts = this._posts.filter((post) => post.creator.uid === this._authService.user?.uid);
+  }
+
+  onSortSelect(event: MatSelectChange) {
+    const sortedPosts = new PostPriorityQueue(this._posts, event.value);
+    this.filteredPosts = sortedPosts.getPostsArray();
   }
 }

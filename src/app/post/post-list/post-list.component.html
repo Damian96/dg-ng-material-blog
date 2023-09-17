@@ -21,6 +21,19 @@
       </button>
     </div>
   </div>
+
+  <div class="row mt-4">
+    <div class="col-12">
+      <mat-form-field>
+        <mat-label>Sort Posts</mat-label>
+        <mat-select (selectionChange)="onSortSelect($event)">
+          <mat-option *ngFor="let algo of sortingAlgos" [value]="algo.value">
+            {{ algo.title }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </div>
 </div>
 
 <div class="container-fluid post-list-container" *ngIf="filteredPosts.length > 0" [class.px-0]="keyword == undefined">
@@ -28,8 +41,7 @@
     <div
       [ngClass]="{'col-lg-10 offset-lg-1 col-md-6 offset-md-3 col-sm-12 mb-4' : keyword == undefined, 'col-12' : keyword !== undefined}">
       <div class="row container-row">
-        <app-post-card *ngFor="let post of filteredPosts" [post]="post"
-          [userUID]="userUID" [userEmail]="userEmail"
+        <app-post-card *ngFor="let post of filteredPosts" [post]="post" [userUID]="userUID" [userEmail]="userEmail"
           (editClicked)="editPost($event)" (deleteClicked)="deletePost($event)"></app-post-card>
       </div>
     </div>

@@ -1,6 +1,8 @@
 import { AbstractControl, ValidatorFn } from "@angular/forms";
 import { User } from "firebase/auth";
 import { CommentTreeNode } from "../comments/comment.models";
+import { Queue } from "js-sdsl";
+import { AutoBind } from "../shared/autobind.decorator";
 
 export class Post {
   id: string | null;
@@ -83,4 +85,56 @@ export function generatePostUID() {
   const randomPart = Math.random().toString(16).substr(2, 8); // Generate a random hexadecimal string
 
   return `${timestamp}-${randomPart}`;
+}
+
+export type sortingAlgos = 'titleAsc' | 'titleDesc';
+
+export class PostPriorityQueue {
+
+  algo: sortingAlgos = 'titleAsc';
+  posts: Queue<Post> = new Queue<Post>();
+  private _postsArr: Post[];
+
+  constructor(posts: Post[], algo?: sortingAlgos) {
+    this.algo = algo;
+    this._postsArr = posts.sort(this.comparator);
+    this._arrayToQueue();
+  }
+
+  add(post: Post): void {
+    this.posts.push(post);
+    this._postsArr.push(post);
+    this._postsArr = this._postsArr.sort(this.comparator); // Maintain the sorting order
+    this._arrayToQueue();
+  }
+
+  getPostsArray(): Post[] {
+    return this._postsArr.slice();
+  }
+
+  private _arrayToQueue() {
+    this.posts.clear();
+    for (let item of this._postsArr) {
+      this.posts.push(item);
+    }
+  }
+
+  private comparator = (postA: Post, postB: Post): number => {
+    const titleA = postA.title.toLowerCase();
+    const titleB = postB.title.toLowerCase();
+    switch (this.algo) {
+      case 'titleAsc':
+        if (titleA < titleB)
+          return -1;
+        if (titleA > titleB)
+          return 1;
+        return 0;
+      case 'titleDesc':
+        if (titleA < titleB)
+          return 1;
+        if (titleA > titleB)
+          return -1;
+        return 0;
+    }
+  }
 }
