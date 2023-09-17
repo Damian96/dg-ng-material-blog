@@ -56,9 +56,9 @@
 
         <div class="row pb-3">
           <label>Post Image</label>
-          <app-file-input fileSelected="onFileSelected"></app-file-input>
-          <div *ngIf="createPostForm.get('selectedFile').value != null">
-            Selected File: {{ createPostForm.get('selectedFile').value.name }}
+          <app-file-input label="Post Image" (fileSelected)="onFileSelected($event)"></app-file-input>
+          <div *ngIf="createPostForm.get('image').value.selectedFile != null">
+            Selected File: {{ createPostForm.get('image').value.selectedFile.name }}
           </div>
         </div>
 

@@ -13,12 +13,12 @@ import { LikeService } from "src/app/likes/like.service";
   styleUrls: ['./post-list.component.scss']
 })
 export class PostListComponent {
-  private posts: Array<Post> = [];
+  private _posts: Array<Post> = [];
 
   @Input() keyword: string | undefined;
   @Input() searchField: string | undefined;
 
-  filteredPosts: Post[] = this.posts;
+  filteredPosts: Post[] = this._posts;
   availableCats: string[] = [];
 
   isLoggedIn: boolean = false;
@@ -30,11 +30,10 @@ export class PostListComponent {
     private _router: Router,
     private _dialogService: DialogService,
     private _postService: PostService,
-    private _likeService: LikeService,
     private cdr: ChangeDetectorRef) {
-    this.posts = this._postService.getAllPosts();
+    this._posts = this._postService.getAllPosts();
 
-    console.log(this.posts);
+    // console.log(this.posts);
 
     this._authService.isUserReady()
       .subscribe(() => {
@@ -46,7 +45,7 @@ export class PostListComponent {
 
   ngOnInit() {
     this.availableCats = this.getAvailableCategories();
-    this.filteredPosts = this.posts;
+    this.filteredPosts = this._posts;
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -68,7 +67,7 @@ export class PostListComponent {
         default:
       }
     } else {
-      this.filteredPosts = this.posts;
+      this.filteredPosts = this._posts;
     }
   }
 
@@ -82,12 +81,14 @@ export class PostListComponent {
       .subscribe((result) => {
         if (result === 'confirmed') {
           // User confirmed the action, perform deletion
-
           this._postService.deletePost(eventData.postId);
 
-          this.posts = this.posts.filter(post => post.id !== eventData.postId);
-
-          this.cdr.detectChanges();
+          let index = this._posts.findIndex((post) => {
+            return post.id === eventData.postId;
+          });
+          if (index !== -1) {
+            this._posts = this._posts.splice(index, 1);
+          }
         }
       });
   }
@@ -99,7 +100,7 @@ export class PostListComponent {
   getAvailableCategories(): string[] {
     let availableCats: string[] = [];
 
-    this.posts.map((post) => {
+    this._posts.map((post) => {
       if (post.category != null && !availableCats.includes(post.category.toString())) {
         availableCats.push(post.category);
       }
@@ -110,13 +111,13 @@ export class PostListComponent {
 
   filterPostsByCategory(category: string | -1): void {
     if (category == -1) {
-      this.filteredPosts = this.posts;
+      this.filteredPosts = this._posts;
       return;
     }
-    this.filteredPosts = this.posts.filter((post) => post.category === category);
+    this.filteredPosts = this._posts.filter((post) => post.category === category);
   }
 
   filterPostsByCurrentUser() {
-    this.filteredPosts = this.posts.filter((post) => post.creator.uid === this._authService.user?.uid);
+    this.filteredPosts = this._posts.filter((post) => post.creator.uid === this._authService.user?.uid);
   }
 }

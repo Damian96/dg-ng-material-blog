@@ -21,6 +21,7 @@ export class CreatePostComponent {
     private _postService: PostService,
     private _snackBar: MatSnackBar,
     private _router: Router,
+    private _postsService: PostService,
     private _renderFilePipe: FileRenderPipe
   ) { };
 
@@ -32,9 +33,9 @@ export class CreatePostComponent {
   });
 
 
-  onFileSelected(file: File | false): void {
-    if (file instanceof File) {
-      this.createPostForm.get('image').setValue(file);
+  onFileSelected(eventData: File | false): void {
+    if (eventData instanceof File) {
+      this.createPostForm.get('image').setValue({ selectedFile: eventData });
     } else {
       this.createPostForm.get('image').setErrors({ invalidFile: true });
     }
@@ -45,7 +46,7 @@ export class CreatePostComponent {
       return;
     }
 
-    this._renderFilePipe.transform(this.createPostForm.get('image').value)
+    this._postsService.convertFileToDataURL(this.createPostForm!.get('image').value.selectedFile)
       .then((dataUrl) => {
         const newPost = new Post(
           null,

@@ -17,7 +17,8 @@ export class Post {
 
   constructor(
     id: string | null = '0',
-    creator: User, title?: string,
+    creator: User,
+    title?: string,
     content?: string,
     cat?: categoryType,
     image?: string,
