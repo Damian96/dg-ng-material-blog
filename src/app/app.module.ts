@@ -34,6 +34,7 @@ import { SpinnerComponent } from './shared/spinner/spinner.component';
 import { PostCardComponent } from './post/post-card/post-card.component';
 import { FileInputComponent } from './shared/file-input/file-input.component';
 import { FileRenderPipe } from './pipes/file-render.pipe';
+import { PostDetailComponent } from './post/post-detail/post-detail.component';
 
 @NgModule({
   declarations: [
@@ -56,7 +57,8 @@ import { FileRenderPipe } from './pipes/file-render.pipe';
     SpinnerComponent,
     PostCardComponent,
     FileInputComponent,
-    FileRenderPipe
+    FileRenderPipe,
+    PostDetailComponent
   ],
   imports: [
     BrowserModule,

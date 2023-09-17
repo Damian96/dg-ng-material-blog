@@ -1,6 +1,7 @@
 import { Injectable } from "@angular/core";
 
 import { FirebaseApp } from "@angular/fire/app";
+import { getAuth as getFireAuth } from "@angular/fire/auth";
 import { Router } from "@angular/router";
 
 import { signOut, getAuth, Auth, User, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";

@@ -1,6 +1,10 @@
 import { Component, Input, EventEmitter, Output } from '@angular/core';
 import { Post } from "src/app/post/post.model";
 import { LikeService } from "src/app/likes/like.service";
+import { FormControl, FormGroup, Validators } from "@angular/forms";
+import { CommentsService } from "src/app/comments/comments.service";
+import { Comment, CommentTreeNode } from "src/app/comments/comment.models";
+import { AuthService } from "src/app/auth/auth.service";
 
 @Component({
   selector: 'app-post-card',
@@ -12,16 +16,32 @@ export class PostCardComponent {
   @Input() post: Post;
   @Input() userUID: string = '';
 
-  likes: number;
+  likeCount: number;
+  comments: Comment[];
 
   @Output() editClicked: EventEmitter<string> = new EventEmitter<string>();
   @Output() deleteClicked: EventEmitter<{ postId: string; postCreatorUid: string }> =
     new EventEmitter<{ postId: string; postCreatorUid: string }>();
 
-  constructor(private _likeService: LikeService) { }
+  postCommentForm: FormGroup = new FormGroup({
+    comment: new FormControl('', [Validators.required, Validators.minLength(1)])
+  });
+
+  constructor(private _likeService: LikeService,
+    private _authService: AuthService,
+    private _commentService: CommentsService) { }
 
   ngOnInit() {
-    this.likes = this._likeService.getPostLikes(this.post);
+    this.likeCount = this._likeService.getPostLikes(this.post);
+
+    const result = this._commentService.findCommentsForPost(this.post.id);
+    if (result && result.hasOwnProperty('comments')) {
+      this.comments = result.comments;
+    } else if (typeof result === 'string') {
+      this.comments = CommentTreeNode.fromJSON(result).comments;
+    } else {
+      this.comments = [];
+    }
   }
 
   onEditClicked(): void {
@@ -35,10 +55,28 @@ export class PostCardComponent {
   onLikeClicked(post: Post): void {
     if (!this._likeService.isLikedByUser(post)) {
       this._likeService.likePost(post);
-      this.likes++;
-    } else if (this.likes > 0) {
+      this.likeCount++;
+    } else if (this.likeCount > 0) {
       this._likeService.unlikePost(post);
-      this.likes--;
+      this.likeCount--;
     }
+  }
+
+  onSubmit(): void {
+    if (this.postCommentForm.invalid) {
+      return;
+    }
+
+    const comment = new Comment(this._authService.user.email,
+      this.post.id,
+      this.postCommentForm.get('comment').value);
+
+    const commentTree = this._commentService.addComment(comment);
+
+    this.comments = commentTree.comments;
+  }
+
+  onReset(): void {
+    this.postCommentForm.reset();
   }
 }

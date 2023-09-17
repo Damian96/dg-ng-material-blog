@@ -1,5 +1,6 @@
 import { AbstractControl, ValidatorFn } from "@angular/forms";
 import { User } from "firebase/auth";
+import { CommentTreeNode } from "../comments/comment.models";
 
 export class Post {
   id: string | null;
@@ -10,6 +11,7 @@ export class Post {
   updatedAt: Date = new Date();
   category: categoryType = null;
   image: string = '';
+  comments: CommentTreeNode | null;
 
   lastLikeLocation: number = -1;
 
@@ -21,6 +23,7 @@ export class Post {
     image?: string,
     created_at?: Date,
     updated_at?: Date,
+    comments?: CommentTreeNode,
   ) {
     if (id !== '0' && id !== null)
       this.id = id.toString();
@@ -46,6 +49,9 @@ export class Post {
 
     if (image)
       this.image = image;
+
+    if (comments)
+      this.comments = comments;
   }
 }
 

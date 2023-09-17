@@ -1,5 +1,5 @@
 <mat-card class="post-card">
-  <mat-card-header *ngIf="post.image != null">
+  <mat-card-header *ngIf="post.image != null && post.image.length">
     <img mat-card-image [src]="post.image" alt="{{ post.creator.email}}" class="d-inline-block mx-auto">
   </mat-card-header>
 
@@ -14,7 +14,9 @@
     </div>
     <!-- <div mat-card-avatar class="example-header-image"></div> -->
     <mat-card-title>
-      <strong class="lead">{{ post.title }}</strong>
+      <a href="/post/{{ post.id }}" title="View Post">
+        <strong class="lead">{{ post.title }}</strong>
+      </a>
     </mat-card-title>
     <mat-card-subtitle>⬆️{{ post.createdAt | formatDate: 'post-list' }}</mat-card-subtitle>
     <mat-card-subtitle>
@@ -32,7 +34,37 @@
   </mat-card-content>
 
   <mat-card-actions>
-    <button mat-button (click)="onLikeClicked(post)">👍 &bull; [{{ likes }}]</button>
+    <button mat-button (click)="onLikeClicked(post)">👍 &bull; [{{ likeCount }}]</button>
     <!-- <button mat-button>SHARE</button> -->
   </mat-card-actions>
+
+  <mat-card-footer>
+    <form class="container-fluid" [formGroup]="postCommentForm">
+      <mat-form-field appearance="fill" [style.width.%]="100">
+        <mat-label>Add a Comment</mat-label>
+        <input matInput type="text" required minlength="1" formControlName="comment"
+          placeholder="Write your comment..." />
+        <mat-icon matSuffix (click)="onReset()">cancel</mat-icon>
+        <mat-icon matSuffix (click)="onSubmit()">send</mat-icon>
+      </mat-form-field>
+    </form>
+  </mat-card-footer>
+
+  <mat-card-footer *ngIf="comments.length">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="card comment-card" *ngFor="let comment of comments">
+          <div class="card-body">
+            <p>{{ comment.content }}</p>
+
+            <div class="d-flex justify-content-between">
+              <div class="d-flex flex-row align-items-center">
+                <p class="small mb-0 ms-2">{{ comment.useremail }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </mat-card-footer>
 </mat-card>

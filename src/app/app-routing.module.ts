@@ -9,12 +9,14 @@ import { PostListComponent } from "./post/post-list/post-list.component";
 import { AuthGuard } from "./auth/auth.guard";
 import { EditPostComponent } from "./post/edit-post/edit-post.component";
 import { SearchPostsComponent } from "./post/search-posts/search-posts.component";
+import { PostDetailComponent } from "./post/post-detail/post-detail.component";
 
 const routes: Routes = [
   { path: '', component: PostListComponent },
 
   { path: 'add-post', component: CreatePostComponent, canActivate: [AuthGuard], data: { breadcrumb: 'Add Post' } },
   { path: 'edit-post/:id', component: EditPostComponent, canActivate: [AuthGuard], data: { breadcrumb: 'Edit Post' } },
+  { path: 'post/:id', component: PostDetailComponent, canActivate: [AuthGuard], data: { breadcrumb: 'View Post' } },
   { path: 'post-list', component: PostListComponent, canActivate: [AuthGuard] },
   { path: 'search-posts', component: SearchPostsComponent, canActivate: [AuthGuard], data: { breadcrumb: 'Search Posts' } },
 
