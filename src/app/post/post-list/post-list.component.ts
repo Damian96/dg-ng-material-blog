@@ -1,12 +1,13 @@
 import { Component, Input, SimpleChanges } from '@angular/core';
-import { Post } from "src/app/post/post.model";
-import { PostService } from "../post.service";
-import { AuthService } from "src/app/auth/auth.service";
-import { DialogService } from "src/app/shared/dialog.service";
-import { Router } from "@angular/router";
-import { sortingAlgos } from "src/app/post/post.model";
 import { MatSelectChange } from "@angular/material/select";
-import { PostPriorityQueue } from "src/app/post/post.model";
+import { Router } from "@angular/router";
+import { Store } from "@ngrx/store";
+import { Observable } from 'rxjs';
+import { Post, PostPriorityQueue, sortingAlgos } from "src/app/post/post.model";
+import { DialogService } from "src/app/shared/dialog.service";
+import * as AuthActions from "../../auth/ngrx/actions/auth.action";
+import * as fromUser from "../../auth/ngrx/selectors/user.selector";
+import { PostService } from "../post.service";
 
 @Component({
   selector: 'app-post-list',
@@ -23,6 +24,8 @@ export class PostListComponent {
   availableCats: string[] = [];
 
   isLoggedIn: boolean = false;
+
+  userId$: Observable<string | null>;
 
   protected userUID: string = '';
   protected userEmail: string = '';
@@ -48,25 +51,33 @@ export class PostListComponent {
     },
   ];
 
-  constructor(private _authService: AuthService,
+  constructor(private _store: Store,
     private _router: Router,
     private _dialogService: DialogService,
     private _postService: PostService
   ) {
     this._posts = this._postService.getAllPosts();
     this._postsQueue = new PostPriorityQueue(this._posts, 'titleAsc');
-
-    this._authService.isUserReady()
-      .subscribe(() => {
-        this.userUID = this._authService.isLoggedIn() ? this._authService.user!.uid : '';
-        this.userEmail = this._authService.user.email;
-        this.isLoggedIn = this._authService.isLoggedIn();
-      });
   }
 
   ngOnInit() {
     this.availableCats = this.getAvailableCategories();
     this.filteredPosts = this._posts;
+
+    this._store.select(AuthActions.login)
+      .subscribe(() => {
+        this.isLoggedIn = true;
+      }).unsubscribe();
+
+    this._store.select(AuthActions.logout)
+      .subscribe(() => {
+        this.isLoggedIn = false;
+      }).unsubscribe();
+
+    (this.userId$ = this._store.select(fromUser.selectUserId))
+      .subscribe((uid: string) => {
+        this.userUID = uid;
+      }).unsubscribe();
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -93,7 +104,7 @@ export class PostListComponent {
   }
 
   deletePost(eventData: { postId: string; postCreatorUid: string }): void {
-    if (this._authService.isLoggedIn() && this._authService.user?.uid !== eventData.postCreatorUid) {
+    if (this.isLoggedIn && this.userUID !== eventData.postCreatorUid) {
       return;
     }
 
@@ -138,7 +149,7 @@ export class PostListComponent {
   }
 
   filterPostsByCurrentUser() {
-    this.filteredPosts = this._posts.filter((post) => post.creator.uid === this._authService.user?.uid);
+    this.filteredPosts = this._posts.filter((post) => post.creator.uid === this.userUID);
   }
 
   onSortSelect(event: MatSelectChange) {

@@ -6,7 +6,7 @@ import { Post, categoryTypeArray, categoryValidator } from "src/app/post/post.mo
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { Router } from "@angular/router";
 import { AuthService } from "src/app/auth/auth.service";
-import { FileRenderPipe } from "src/app/pipes/file-render.pipe";
+import { FileRenderPipe } from "src/app/shared/pipes/file-render.pipe";
 
 @Component({
   selector: 'app-create-post',

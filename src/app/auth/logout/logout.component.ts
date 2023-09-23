@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 
-import { AuthService } from "../auth.service";
+import { Store } from "@ngrx/store";
+import * as AuthActions from "../ngrx/actions/auth.action";
+import { Router } from "@angular/router";
 
 @Component({
   selector: 'app-logout',
@@ -10,8 +12,8 @@ import { AuthService } from "../auth.service";
 export class LogoutComponent {
 
 
-  constructor(private _authService: AuthService) {
-    this._authService.logout();
+  constructor(private _store: Store, private _router: Router) {
+    this._store.dispatch(AuthActions.logout({ message: 'Farewell!' }));
   }
 
 

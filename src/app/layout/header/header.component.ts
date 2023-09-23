@@ -1,5 +1,6 @@
 import { Component, ChangeDetectorRef } from '@angular/core';
-import { AuthService } from "src/app/auth/auth.service";
+import { Store } from "@ngrx/store";
+import * as AuthActions from "../../auth/ngrx/actions/auth.action";
 
 @Component({
   selector: 'app-header',
@@ -9,21 +10,16 @@ import { AuthService } from "src/app/auth/auth.service";
 export class HeaderComponent {
 
   isLoggedIn: boolean = false;
-  userEmail: string | null = '';
 
-  constructor(private _authService: AuthService, private _cdr: ChangeDetectorRef) { }
+  constructor(private _store: Store, private _cdr: ChangeDetectorRef) { }
 
   ngOnInit() {
-    this._authService.isUserReady()
-      .subscribe(() => {
-        this.isLoggedIn = this._authService.isLoggedIn();
-        if (this._authService.user != null && this.isLoggedIn) {
-          this.userEmail = this._authService.user!.email;
-        }
-      });
-
-    this._authService.authStateChanged$.subscribe((authState: boolean) => {
-      this.isLoggedIn = authState;
+    this._store.select(AuthActions.login).subscribe(() => {
+      this.isLoggedIn = true;
+      this._cdr.detectChanges();
+    });
+    this._store.select(AuthActions.login).subscribe(() => {
+      this.isLoggedIn = false;
       this._cdr.detectChanges();
     });
   }

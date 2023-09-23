@@ -3,8 +3,7 @@ import { Injectable } from '@angular/core';
 import * as store from "store";
 import { Post, categoryType } from "./post.model";
 import { User } from "@angular/fire/auth";
-import { FileRenderPipe } from "../pipes/file-render.pipe";
-import { Like } from "../likes/like.model";
+import { FileRenderPipe } from "../shared/pipes/file-render.pipe";
 
 
 @Injectable({

@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
-import { AuthService } from "../auth.service";
 
 import { FormControl, FormGroup, Validators } from "@angular/forms";
-import { User } from "@angular/fire/auth";
 
-import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
-import { Router } from "@angular/router";
+import { Store } from "@ngrx/store";
+
+import * as AuthActions from '../ngrx/actions/auth.action';
+import * as SnackbarActions from '../ngrx/actions/snackbar.action';
 
 @Component({
   selector: 'app-login',
@@ -19,29 +19,15 @@ export class LoginComponent {
     password: new FormControl('', [Validators.required, Validators.pattern(/[A-Za-z0-9]{4,}/g)])
   });
 
-
-  constructor(private _authService: AuthService, private _snackBar: MatSnackBar, private _router: Router) { }
+  constructor(private _store: Store) { }
 
   onSubmit(): void {
-    if (this.loginForm.invalid) {
-      // Guard
+    if (this.loginForm.valid) {
+      const { email, password } = this.loginForm.value;
+      this._store.dispatch(AuthActions.login({ email: email, password: password }));
       return;
+    } else {
+      this._store.dispatch(SnackbarActions.showSnackbar({ message: 'The Form is invalid' }));
     }
-
-    this._authService
-      .login(this.loginForm.get('email')?.value, this.loginForm.get('password')?.value)
-      .subscribe((result: User | boolean) => {
-        if (result !== false) {
-          const message = 'You have successfully logged in!';
-          console.log(message);
-          this._snackBar.open(message, 'OK');
-          this._router.navigateByUrl('/post-list');
-        }
-      },
-        (error) => {
-          const message = 'Could not loggin with the specified credentials!';
-          this._snackBar.open(message, 'OK');
-          console.error(message);
-        });
   }
 }
