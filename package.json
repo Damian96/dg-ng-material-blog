@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve --hmr",
+    "start": "ng serve",
     "build": "ng build",
     "deploy-fb": "firebase deploy --only hosting",
     "deploy-gh": "ng deploy --base-href='https://damian96.github.io/dg-ng-material-blog/'",

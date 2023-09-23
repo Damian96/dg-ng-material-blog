@@ -4,6 +4,8 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, map, of, switchMap } from "rxjs";
 import { AuthService } from "src/app/auth/auth.service";
 import * as AuthActions from '../actions/auth.action';
+import { MatSnackBar } from "@angular/material/snack-bar";
+import { registerFailure } from '../actions/auth.action';
 
 @Injectable()
 export class AuthEffects {
@@ -11,7 +13,8 @@ export class AuthEffects {
   constructor(
     private _actions$: Actions,
     private _authService: AuthService,
-    private _router: Router
+    private _router: Router,
+    private _snackBar: MatSnackBar
   ) { }
 
   login$ = createEffect(() => {
@@ -33,6 +36,7 @@ export class AuthEffects {
       ofType(AuthActions.loginSuccess),
       map((action) => {
         console.info(action.message);
+        this._snackBar.open(action.message, 'Dismiss');
         this._router.navigate(['/post-list']);
       })
     )
@@ -59,9 +63,30 @@ export class AuthEffects {
       ofType(AuthActions.register),
       switchMap((action) => this._authService.register(action.email, action.password)
         .pipe(
-          map((user) => AuthActions.registerSuccess({ user })),
-          catchError((error) => of(AuthActions.registerFailure({ error })))
+          map((user) => AuthActions.registerSuccess({ user, message: 'Successfully register' })),
+          catchError((error) => of(AuthActions.registerFailure({ message: error.toString() })))
         ))
     )
   });
+
+  registerSuccess$ = createEffect(() => {
+    return this._actions$.pipe(
+      ofType(AuthActions.registerSuccess),
+      map((action) => {
+        console.info(action.message);
+        this._snackBar.open(action.message, 'Dismiss');
+        this._router.navigate(['/login']);
+      })
+    )
+  }, { dispatch: false });
+
+  registerFailure$ = createEffect(() => {
+    return this._actions$.pipe(
+      ofType(AuthActions.registerSuccess),
+      map((action) => {
+        console.error(action.message);
+        this._snackBar.open(action.message, 'Dismiss');
+      })
+    )
+  }, { dispatch: false });
 }

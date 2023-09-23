@@ -1,21 +1,25 @@
 import { createReducer, on } from '@ngrx/store';
 import * as AuthActions from '../actions/auth.action';
 import { User } from "@firebase/auth";
+import { AppState } from "../models/app.state";
 
 export interface AuthState {
   user: User | null;
-  message: string | null
+  message: string | null,
+  email: string | null,
+  password: string | null,
 }
 
-const initialState: AuthState = {
+export const initialAuthState: AuthState = {
   user: null,
+  email: null,
+  password: null,
   message: null
 };
 
 const _authReducer = createReducer(
-  initialState,
+  initialAuthState,
   on(AuthActions.login, (state, { email, password }) => ({
-    initialState,
     ...state,
     email,
     password,

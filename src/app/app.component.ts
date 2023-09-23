@@ -15,15 +15,8 @@ export class AppComponent {
   constructor(private _authService: AuthService, private _snackBar: MatSnackBar) { }
 
   ngOnInit() {
-    this._authService.isUserReady().subscribe(() => {
-      this.finishedLoading = true;
-
-      if (this._authService.isLoggedIn()) {
-        this._snackBar.open(`Welcome back, ${this._authService.user?.email}!`, 'Thanks!', {
-          duration: 3000
-        });
-      }
-    });
+    this._snackBar.open(`Welcome back, ${this._authService.user?.email}!`, 'Thanks!');
+    this.finishedLoading = true;
   }
 
 }
