@@ -1,16 +1,7 @@
 .container-row {
-  display: flex;
-  flex-flow: row wrap;
-  justify-content: center;
-  align-items: center;
-  gap: 5vh 1vw;
-
-  app-post-card {
-    width: 33.33vw;
-    // width: 15.90vw;
-    max-width: calc(max(150px, 33.33vw));
-    min-width: calc(min(380px, 90%));
-  }
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 380px);
+  grid-column-gap: 10px;
 }
 
 .not-found-svg {

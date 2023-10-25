@@ -19,13 +19,13 @@ import { AuthModule as AngularFireAuthModule, getAuth, provideAuth } from '@angu
 import { getDatabase, provideDatabase } from '@angular/fire/database';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { ReactiveFormsModule } from "@angular/forms";
-import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { AuthModule } from "./auth/auth.module";
+import { showSnackbar } from './auth/ngrx/actions/snackbar.action';
 import { FooterComponent } from './layout/footer/footer.component';
 import { MainComponent } from './layout/main/main.component';
 import { BootstrapModule } from "./modules/bootstrap.module";
-import { showSnackbar } from './auth/ngrx/actions/snackbar.action';
 import { EditPostComponent } from './post/edit-post/edit-post.component';
 import { PostCardComponent } from './post/post-card/post-card.component';
 import { PostDetailComponent } from './post/post-detail/post-detail.component';
@@ -39,7 +39,6 @@ import { SpinnerComponent } from './shared/components/spinner/spinner.component'
 import { CapitilizePipe } from './shared/pipes/capitilize.pipe';
 import { FileRenderPipe } from './shared/pipes/file-render.pipe';
 import { FormatDatePipe } from './shared/pipes/format-date.pipe';
-import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 
 @NgModule({
   declarations: [

@@ -5,7 +5,6 @@ import { catchError, map, of, switchMap } from "rxjs";
 import { AuthService } from "src/app/auth/auth.service";
 import * as AuthActions from '../actions/auth.action';
 import { MatSnackBar } from "@angular/material/snack-bar";
-import { registerFailure } from '../actions/auth.action';
 
 @Injectable()
 export class AuthEffects {
@@ -46,7 +45,8 @@ export class AuthEffects {
     return this._actions$.pipe(
       ofType(AuthActions.loginFailure),
       map((action) => {
-        console.error(action.message);
+        console.debug(action);
+        this._snackBar.open('Wrong Credentials', 'Dismiss', { duration: 3000 })
       })
     )
   }, { dispatch: false });
@@ -82,9 +82,9 @@ export class AuthEffects {
 
   registerFailure$ = createEffect(() => {
     return this._actions$.pipe(
-      ofType(AuthActions.registerSuccess),
+      ofType(AuthActions.registerFailure),
       map((action) => {
-        console.error(action.message);
+        console.debug(action.message);
         this._snackBar.open(action.message, 'Dismiss');
       })
     )

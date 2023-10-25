@@ -5,7 +5,7 @@ import { Router } from "@angular/router";
 
 import { Store } from "@ngrx/store";
 import { Auth, User, createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword, signOut } from "firebase/auth";
-import { Observable, Subject, from, map } from 'rxjs';
+import { Observable, from, map } from 'rxjs';
 import * as AuthActions from "./ngrx/actions/auth.action";
 import * as SnackbarActions from "./ngrx/actions/snackbar.action";
 
@@ -19,8 +19,7 @@ export class AuthService {
   showLoginButton = false;
   showLogoutButton = false;
 
-  authStateChanged: Subject<boolean> = new Subject();
-  authStateChanged$: Observable<boolean> = this.authStateChanged.asObservable();
+  authState$: Observable<any>;
 
   /**
    *
@@ -31,6 +30,7 @@ export class AuthService {
     private _store: Store
   ) {
     this.#auth = getAuth(this.firebaseProvider);
+    this.authState$ = from(this.#auth.authStateReady());
   }
 
   isUserReady(): Observable<void> {

@@ -3,12 +3,14 @@ import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot } from
 import { Store } from "@ngrx/store";
 import { Observable, map, take } from 'rxjs';
 import { getLoggedIn } from './ngrx/selectors/user.selector';
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthGuard implements CanActivate {
   constructor(private _store: Store,
+    private _authService: AuthService,
     private _router: Router
   ) { }
 
@@ -20,7 +22,6 @@ export class AuthGuard implements CanActivate {
       .pipe(
         take(1),
         map((loggedIn: boolean) => {
-          console.log(loggedIn);
           if (loggedIn) {
             return true;
           } else {

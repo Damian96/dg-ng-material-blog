@@ -1,0 +1,40 @@
+Folder PATH listing
+Volume serial number is 4EF9-C549
+C:.
++---app
+¦   +---auth
+¦   ¦   +---login
+¦   ¦   +---logout
+¦   ¦   +---ngrx
+¦   ¦   ¦   +---actions
+¦   ¦   ¦   +---effects
+¦   ¦   ¦   +---models
+¦   ¦   ¦   +---reducers
+¦   ¦   ¦   L---selectors
+¦   ¦   L---register
+¦   +---comments
+¦   +---layout
+¦   ¦   +---footer
+¦   ¦   +---header
+¦   ¦   L---main
+¦   +---likes
+¦   +---modules
+¦   +---post
+¦   ¦   +---create-post
+¦   ¦   +---edit-post
+¦   ¦   +---post-card
+¦   ¦   +---post-detail
+¦   ¦   +---post-list
+¦   ¦   L---search-posts
+¦   L---shared
+¦       +---components
+¦       ¦   +---alert
+¦       ¦   +---breadcrumbs
+¦       ¦   +---confirm-dialog
+¦       ¦   +---file-input
+¦       ¦   L---spinner
+¦       +---models
+¦       +---pipes
+¦       L---validators
++---assets
+L---environments
