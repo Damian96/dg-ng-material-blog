@@ -58,6 +58,9 @@ export class PostListComponent {
 
     this._authService.isUserReady()
       .subscribe(() => {
+        if (!this._authService.user) return;
+        this.isLoggedIn = false;
+
         this.userUID = this._authService.isLoggedIn() ? this._authService.user!.uid : '';
         this.userEmail = this._authService.user.email;
         this.isLoggedIn = this._authService.isLoggedIn();
