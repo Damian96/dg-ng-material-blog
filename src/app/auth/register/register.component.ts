@@ -14,7 +14,7 @@ export class RegisterComponent {
 
   registrationForm: FormGroup = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.email]),
-    password: new FormControl('', [Validators.required, Validators.pattern(/[A-Za-z0-9]{4,}/g)])
+    password: new FormControl('', [Validators.required, Validators.pattern(/[A-Za-z0-9]{6,}/g)])
   });
 
   constructor(private _authService: AuthService, private _snackBar: MatSnackBar, private _router: Router) { }
@@ -27,7 +27,7 @@ export class RegisterComponent {
     this._authService.register(this.registrationForm.get('email')?.value, this.registrationForm.get('password')?.value)
       .subscribe((result: User | false) => {
         if (result !== false) {
-          const message = 'You have successfully registered & logged in!';
+          const message = 'You have successfully registered!';
           console.log(message);
           this._snackBar.open(message, 'OK');
 
@@ -35,7 +35,7 @@ export class RegisterComponent {
         }
       },
         (error) => {
-          const message = 'Could not loggin with the specified credentials!';
+          const message = 'Could not register!';
           this._snackBar.open(message, 'OK');
           console.error(message);
         });
